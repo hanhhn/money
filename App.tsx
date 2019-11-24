@@ -9,17 +9,13 @@
  */
 
 import React from 'react';
-import {
-  View,
-  Text,
-} from 'react-native';
-
+import {View, Text} from 'react-native';
 
 const App = () => {
   return (
-   <View>
-     <Text>Web ok</Text>
-   </View>
+    <View>
+      <Text>Web ok</Text>
+    </View>
   );
 };
 
