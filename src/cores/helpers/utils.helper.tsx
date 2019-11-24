@@ -46,7 +46,7 @@ export function getDate(date: Date): string {
   );
 }
 
-export function vnToEn(str) {
+export function vnToEn(str: any) {
   str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, 'a');
   str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, 'e');
   str = str.replace(/ì|í|ị|ỉ|ĩ/g, 'i');
@@ -67,7 +67,7 @@ export function vnToEn(str) {
   return str;
 }
 
-export function toQueryString(obj) {
+export function toQueryString(obj: any) {
   if (obj) {
     const str = [];
     for (const p in obj) {
