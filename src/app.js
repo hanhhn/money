@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Text, View, Navigator} from 'react-native';
 import {Provider} from 'react-redux';
-import appStore from './App.store';
+import appStore from './app.store';
 
 export default class App extends Component {
   constructor(props) {
