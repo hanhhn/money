@@ -1,4 +1,4 @@
-const accountReducer = (state, action) => {
+const accountReducer = (state = [], action) => {
   switch (action.type) {
     case 'SINGUP':
       [
