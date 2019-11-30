@@ -1,7 +1,13 @@
 const accountReducer = (state = [], action) => {
   switch (action.type) {
-    case 'SINGUP':
-      [
+    case 'SIGNIN-FACEBOOK':
+      return state;
+    case 'SIGNIN-GOOGLE':
+      return state;
+    case 'SIGNIN-FAILED':
+      return state;
+    case 'SIGNUP':
+      return [
         ...state,
         {
           id: action.id,
@@ -9,11 +15,9 @@ const accountReducer = (state = [], action) => {
           completed: false,
         },
       ];
-      break;
-    case 'SINGIN':
-      break;
     case 'SIGNOUT':
-      break;
+      return state;
+
     default:
       return state;
   }

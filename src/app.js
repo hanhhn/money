@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
-import {Text, View} from 'react-native';
 import {Provider} from 'react-redux';
 import appStore from './app.store';
-import RootRouter from './router';
+import SignInContainer from './containners/sign-in.container';
 
 export default class App extends Component {
   constructor(props) {
@@ -12,7 +11,7 @@ export default class App extends Component {
   render() {
     return (
       <Provider store={appStore}>
-        <RootRouter />
+        <SignInContainer />
       </Provider>
     );
   }
