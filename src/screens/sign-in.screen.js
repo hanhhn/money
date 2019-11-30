@@ -61,6 +61,8 @@ const styles = StyleSheet.create({
   },
   formGroup: {
     padding: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   facebook: {
     alignItems: 'center',
@@ -71,6 +73,7 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     display: 'flex',
     flexDirection: 'row',
+    minWidth: 300,
   },
   or: {
     textAlign: 'center',
@@ -84,6 +87,7 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     display: 'flex',
     flexDirection: 'row',
+    minWidth: 300,
   },
   text: {
     fontSize: 14,
@@ -93,8 +97,8 @@ const styles = StyleSheet.create({
   textCenter: {
     textAlign: 'center',
     color: '#cccccc',
-    margin: 3,
-    padding: 2,
+    margin: 5,
+    padding: 3,
   },
   f: {
     marginRight: 15,

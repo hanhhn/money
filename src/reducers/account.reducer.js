@@ -1,6 +1,9 @@
+import {loginFacebook} from '../cores/services/auth.service';
+
 const accountReducer = (state = [], action) => {
   switch (action.type) {
     case 'SIGNIN-FACEBOOK':
+      loginFacebook();
       return state;
     case 'SIGNIN-GOOGLE':
       return state;
