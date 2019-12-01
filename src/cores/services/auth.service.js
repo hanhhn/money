@@ -1,7 +1,10 @@
-import {Platform} from 'react-native';
+import {Platform, Alert} from 'react-native';
 import {LoginManager, AccessToken} from 'react-native-fbsdk';
 import firebase from '@react-native-firebase/app';
+import auth from '@react-native-firebase/auth';
 import {iosConfig, androidConfig} from '../../config';
+import {_storeData} from './storage.service';
+import {USER_DATE, ACCESS_TOKEN} from '../../constants';
 
 // Attempt a login using the Facebook login dialog asking for default permissions.
 export const loginFacebook = () => {
@@ -10,8 +13,6 @@ export const loginFacebook = () => {
       if (result.isCancelled) {
         return Promise.reject(new Error('User canceled login'));
       } else {
-        // console.log(result.grantedPermissions.toString());
-
         AccessToken.getCurrentAccessToken().then(data => {
           if (!firebase.apps.length) {
             firebase.initializeApp(
@@ -19,26 +20,24 @@ export const loginFacebook = () => {
             );
           }
 
-          console.log(firebase.apps);
-
+          _storeData(ACCESS_TOKEN, data.accessToken);
           const credential = firebase.auth.FacebookAuthProvider.credential(
             data.accessToken,
-            '4a6625c4aee450444b91e6ae59f070a9',
           );
 
-          firebase
-            .auth()
+          auth()
             .signInWithCredential(credential)
             .then(user => {
-              console.log(user);
+              _storeData(USER_DATE, user);
+              Alert.alert('Success !^^', 'Đăng nhập thành công.');
             })
-            .catch(err => {
-              return Promise.reject(err);
+            .catch(() => {
+              Alert.alert('Error !^^', 'Xảy ra lỗi trong quá trình đăng nhập.');
             });
         });
       }
     })
-    .catch(err => {
-      console.log(err);
+    .catch(() => {
+      Alert.alert('Error !^^', 'Xảy ra lỗi trong quá trình đăng nhập.');
     });
 };

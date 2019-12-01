@@ -8,10 +8,7 @@ export const iosConfig = {
   storageBucket: 'my-money-1204.appspot.com',
   messagingSenderId: '836003212691',
   projectId: 'my-money-1204',
-
-  // enable persistence by adding the below flag
-  persistence: true,
-  authDomain: 'my-money-1204.firebaseapp.com',
+  persistence: true, // enable persistence by adding the below flag
 };
 
 // pluck values from your `google-services.json` file you created on the firebase console
@@ -24,8 +21,5 @@ export const androidConfig = {
   storageBucket: 'my-money-1204.appspot.com',
   messagingSenderId: '836003212691',
   projectId: 'my-money-1204',
-
-  // enable persistence by adding the below flag
-  persistence: true,
-  authDomain: 'my-money-1204.firebaseapp.com',
+  persistence: true, // enable persistence by adding the below flag
 };
