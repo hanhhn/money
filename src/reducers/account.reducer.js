@@ -1,26 +1,30 @@
-import {loginFacebook} from '../cores/services/auth.service';
+import {loginFacebook, userSignedIn} from '../cores/services/auth.service';
 
-const accountReducer = (state = [], action) => {
+const accountReducer = (state = {isSignedIn: false}, action) => {
   switch (action.type) {
     case 'SIGNIN-FACEBOOK':
       loginFacebook();
-      return state;
+
+      return {
+        ...state,
+        isSignedIn: userSignedIn(),
+      };
     case 'SIGNIN-GOOGLE':
       return state;
-    case 'SIGNIN-FAILED':
-      return state;
-    case 'SIGNUP':
-      return [
+
+    case 'SIGNIN-CHECK':
+      let isSignedIn = false;
+
+      userSignedIn(data => {
+        isSignedIn = data;
+      });
+
+      return {
         ...state,
-        {
-          id: action.id,
-          text: action.text,
-          completed: false,
-        },
-      ];
+        isSignedIn: isSignedIn,
+      };
     case 'SIGNOUT':
       return state;
-
     default:
       return state;
   }

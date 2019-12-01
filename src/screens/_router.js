@@ -2,10 +2,10 @@ import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 import {createBottomTabNavigator} from 'react-navigation-tabs';
 
-import AccountScreen from './screens/account.screen';
-import InputScreen from './screens/input.screen';
-import OutputScreen from './screens/output.screen';
-import ReportScreen from './screens/report.screen';
+import AccountScreen from './account.screen';
+import InputScreen from './input.screen';
+import OutputScreen from './output.screen';
+import ReportScreen from './report.screen';
 
 const mainNavigator = createBottomTabNavigator({
   OutputScreen: {

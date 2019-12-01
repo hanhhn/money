@@ -1,18 +1,17 @@
-import {AsyncStorage} from '@react-native-community/async-storage';
-import {Alert} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 
-export const _storeData = async (key, value) => {
+export const _setStoreData = async (key, value) => {
   try {
     await AsyncStorage.setItem(key, JSON.stringify(value));
   } catch (error) {
-    Alert.alert('Error !^^', 'Xảy ra lỗi trong quá trình đồng bộ dữ liệu.');
+    console.log(error);
   }
 };
 
-export const _retrieveData = async key => {
+export const _getStoreData = async key => {
   try {
     return await AsyncStorage.getItem(key);
   } catch (error) {
-    Alert.alert('Error !^^', 'Xảy ra lỗi trong quá trình đồng bộ dữ liệu.');
+    console.log(error);
   }
 };

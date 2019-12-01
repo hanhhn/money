@@ -1,34 +1,23 @@
-export const SignInFacebook = c => {
+export const SignInFacebook = () => {
   return {
     type: 'SIGNIN-FACEBOOK',
-    count: 0,
   };
 };
 
-export const SignInGoogle = c => {
+export const SignInGoogle = () => {
   return {
     type: 'SIGNIN-GOOGLE',
-    count: 0,
   };
 };
 
-export const SignInFailed = c => {
+export const CheckSignedIn = () => {
   return {
-    type: 'SIGNIN-FAILED',
-    count: 0,
+    type: 'SIGNIN-CHECK',
   };
 };
 
-export const SignUp = c => {
-  return {
-    type: 'SIGNUP',
-    count: c++,
-  };
-};
-
-export const SignOut = c => {
+export const SignOut = () => {
   return {
     type: 'SIGNOUT',
-    count: c--,
   };
 };
