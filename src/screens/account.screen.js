@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
-import {Text, View} from 'react-native';
+import {Text, View, Button} from 'react-native';
 
 export default class AccountScreen extends Component {
   render() {
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <Text>Hello, AccountScreen!</Text>
+        <Button title="Sign out" onPress={() => this.props.onSignOut()} />
       </View>
     );
   }

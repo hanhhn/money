@@ -1,29 +1,38 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import RootScreen from '../screens/root.screen';
-import {CheckSignedIn} from '../actions/account.action';
+import SignInSceen from '../screens/sign-in.screen.js';
+import {UserSignedIn, SignedIn, SignIn} from '../actions/auth.action';
+import * as storageService from '../cores/services/storage.service';
+import {ACCESS_TOKEN} from '../constants';
 
 class RootContainer extends Component {
-  componentWillMount() {
-    const {onCheckSignedIn} = this.props;
-    onCheckSignedIn();
+  async UNSAFE_componentWillMount() {
+    const {onUserSignedIn} = this.props;
+
+    const token = await storageService._getStoreData(ACCESS_TOKEN);
+    if (token) {
+      onUserSignedIn(token);
+    }
   }
 
   render() {
-    const {isSignedIn} = this.props.account;
-    return <RootScreen isSignedIn={isSignedIn} />;
+    const {isLogged} = this.props.auth;
+    return isLogged ? <RootScreen /> : <SignInSceen {...this.props} />;
   }
 }
 
 export default connect(
   state => {
     return {
-      account: state.accountReducer,
+      auth: state.authReducer,
     };
   },
   dispatch => {
     return {
-      onCheckSignedIn: () => dispatch(CheckSignedIn()),
+      onUserSignedIn: token => dispatch(UserSignedIn(token)),
+      onSignedIn: (logged, token) => dispatch(SignedIn(logged, token)),
+      onSignIn: func => dispatch(SignIn(func)),
     };
   },
 )(RootContainer);

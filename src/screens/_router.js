@@ -2,7 +2,7 @@ import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 import {createBottomTabNavigator} from 'react-navigation-tabs';
 
-import AccountScreen from './account.screen';
+import AccountContainer from '../containners/account.container';
 import InputScreen from './input.screen';
 import OutputScreen from './output.screen';
 import ReportScreen from './report.screen';
@@ -23,7 +23,7 @@ const mainNavigator = createBottomTabNavigator({
   },
   AccountScreen: {
     title: 'Tài Khoản',
-    screen: AccountScreen,
+    screen: AccountContainer,
   },
 });
 

@@ -3,7 +3,7 @@ import {Text, View, TouchableOpacity, StyleSheet} from 'react-native';
 
 export default class SignInScreen extends Component {
   render() {
-    const {onSignInFacebook, onSignInGoogle} = this.props;
+    const {onSignIn} = this.props;
 
     return (
       <View style={styles.container}>
@@ -18,14 +18,16 @@ export default class SignInScreen extends Component {
           <View style={styles.formGroup}>
             <TouchableOpacity
               style={styles.facebook}
-              onPress={onSignInFacebook}>
+              onPress={() => onSignIn('facebook')}>
               <Text style={styles.f}>F</Text>
               <Text style={styles.text}>Sign in with Facebook</Text>
             </TouchableOpacity>
             <View>
               <Text style={styles.or}>Or</Text>
             </View>
-            <TouchableOpacity style={styles.google} onPress={onSignInGoogle}>
+            <TouchableOpacity
+              style={styles.google}
+              onPress={() => onSignIn('google')}>
               <Text style={styles.g}>G</Text>
               <Text style={styles.text}>Sign in with Google</Text>
             </TouchableOpacity>
