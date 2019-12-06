@@ -1,30 +1,41 @@
 import {createAppContainer} from 'react-navigation';
-import {createStackNavigator} from 'react-navigation-stack';
 import {createBottomTabNavigator} from 'react-navigation-tabs';
-
 import AccountContainer from '../containners/account.container';
 import InputScreen from './input.screen';
-import OutputScreen from './output.screen';
+import OutputContainer from '../containners/output.container';
 import ReportScreen from './report.screen';
 
-const mainNavigator = createBottomTabNavigator({
-  OutputScreen: {
-    tabBarLabel: 'Details',
-    title: 'Chi',
-    screen: OutputScreen,
+const mainNavigator = createBottomTabNavigator(
+  {
+    InputScreen: {
+      screen: InputScreen,
+      navigationOptions: {
+        tabBarLabel: 'Thu',
+      },
+    },
+    OutputScreen: {
+      screen: OutputContainer,
+      navigationOptions: {
+        tabBarLabel: 'Chi',
+      },
+    },
+    ReportScreen: {
+      screen: ReportScreen,
+      navigationOptions: {
+        tabBarLabel: 'Báo cáo',
+      },
+    },
+    AccountScreen: {
+      screen: AccountContainer,
+      navigationOptions: {
+        tabBarLabel: 'Tài khoản',
+      },
+    },
   },
-  InputScreen: {
-    title: 'Thu',
-    screen: InputScreen,
+  {
+    initialRouteName: 'OutputScreen',
+    lazy: true,
   },
-  ReportScreen: {
-    title: 'Báo Cáo',
-    screen: ReportScreen,
-  },
-  AccountScreen: {
-    title: 'Tài Khoản',
-    screen: AccountContainer,
-  },
-});
+);
 
 export default createAppContainer(mainNavigator);

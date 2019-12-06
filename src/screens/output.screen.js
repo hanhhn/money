@@ -5,7 +5,7 @@ export default class OutputScreen extends Component {
   render() {
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <Text>Hello, InputScreen!</Text>
+        <Text>Hello, OutputScreen!</Text>
       </View>
     );
   }
