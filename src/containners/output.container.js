@@ -6,6 +6,7 @@ import {connect} from 'react-redux';
 import {SignOut} from '../actions/auth.action';
 
 import OutputScreen from '../screens/output.screen';
+import HeaderContainer from '../containners/header.container';
 
 class OutputContainer extends Component {
   container = {};
@@ -45,9 +46,7 @@ class OutputContainer extends Component {
 
     return (
       <>
-        <View>
-          <Text>Header</Text>
-        </View>
+        <HeaderContainer />
         <ContentContainer />
       </>
     );

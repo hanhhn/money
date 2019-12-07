@@ -1,12 +1,29 @@
 import React, {Component} from 'react';
-import {Text, View} from 'react-native';
+import {Text, View, ScrollView, StyleSheet} from 'react-native';
+import Group from '../components/group.component';
 
 export default class OutputScreen extends Component {
   render() {
     return (
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <Text>Hello, OutputScreen!</Text>
-      </View>
+      <ScrollView style={styles.container}>
+        <Group />
+        <Group />
+        <Group />
+        <Group />
+        <Group />
+        <Group />
+        <Group />
+        <Group />
+        <Group />
+      </ScrollView>
     );
   }
 }
+
+// Styles
+const styles = StyleSheet.create({
+  container: {
+    paddingLeft: 10,
+    paddingRight: 10,
+  },
+});
