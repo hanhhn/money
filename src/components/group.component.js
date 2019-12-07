@@ -72,6 +72,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderColor: 'rgba(0,0,0,0.2)',
     borderLeftWidth: 0.5,
-    padding: 10,
   },
 });

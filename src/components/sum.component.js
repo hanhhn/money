@@ -6,7 +6,7 @@ export default class Sum extends Component {
     return (
       <View style={styles.container}>
         <Text>20/11</Text>
-        <Text>10.000.000 đ</Text>
+        <Text style={styles.text}>300k</Text>
       </View>
     );
   }
@@ -18,5 +18,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     justifyContent: 'center',
     alignItems: 'center',
+    minWidth: 55,
+  },
+  text: {
+    color: '#85bb65',
+    fontSize: 17,
   },
 });

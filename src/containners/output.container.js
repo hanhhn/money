@@ -59,7 +59,7 @@ class OutputContainer extends Component {
             backgroundColor: '#ffaf40',
           },
           tabStyle: {
-            height: 40,
+            // height: 40,
             alignContent: 'center',
             alignItems: 'center',
           },

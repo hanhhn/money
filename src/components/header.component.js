@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
   vnd: {
     fontSize: 20,
     color: '#85bb65',
+    fontWeight: 'bold',
   },
   plus: {
     marginLeft: 10,
