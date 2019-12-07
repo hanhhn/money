@@ -22,16 +22,46 @@ class OutputContainer extends Component {
             title: 'Tháng Này',
           },
         },
+        Tab2: {
+          screen: OutputScreen,
+          navigationOptions: {
+            title: '11/2019',
+          },
+        },
+        Tab3: {
+          screen: OutputScreen,
+          navigationOptions: {
+            title: '10/2019',
+          },
+        },
+        Tab4: {
+          screen: OutputScreen,
+          navigationOptions: {
+            title: '09/2019',
+          },
+        },
+        Tab5: {
+          screen: OutputScreen,
+          navigationOptions: {
+            title: '08/2019',
+          },
+        },
       },
       {
         initialRouteName: 'Tab1',
         lazy: true,
         tabBarOptions: {
           labelStyle: {
-            fontSize: 12,
+            color: '#ffffff',
+            fontWeight: 'bold',
+          },
+          style: {
+            backgroundColor: '#ffaf40',
           },
           tabStyle: {
-            width: 100,
+            height: 40,
+            alignContent: 'center',
+            alignItems: 'center',
           },
           scrollEnabled: true,
         },

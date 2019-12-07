@@ -6,14 +6,15 @@ export default class Header extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <View>
-          <TouchableOpacity>
-            <Text>Icon</Text>
-          </TouchableOpacity>
+        <View style={styles.notify}>
+          <Icon name="dollar" size={25} color="#85bb65" />
         </View>
-        <View>
+        <View style={styles.money}>
+          <Text style={styles.vnd}>1.000.000 đ</Text>
+        </View>
+        <View style={styles.plus}>
           <TouchableOpacity>
-            <Icon name="rocket" size={30} color="#900" />
+            <Icon name="plus-circle" size={40} color="#ecf0f1" />
           </TouchableOpacity>
         </View>
       </View>
@@ -28,5 +29,22 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    backgroundColor: '#ffaf40',
+    paddingTop: 3,
+  },
+  notify: {
+    marginLeft: 10,
+    marginRight: 10,
+  },
+  money: {
+    flex: 1,
+  },
+  vnd: {
+    fontSize: 20,
+    color: '#85bb65',
+  },
+  plus: {
+    marginLeft: 10,
+    marginRight: 10,
   },
 });
