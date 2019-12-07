@@ -1,8 +1,13 @@
 import React, {Component} from 'react';
 import {Text, View, TouchableOpacity, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Incoming from './incoming.component';
 
 export default class Header extends Component {
+  state = {
+    visible: false,
+  };
+
   render() {
     return (
       <View style={styles.container}>
@@ -14,9 +19,19 @@ export default class Header extends Component {
         </View>
         <View style={styles.plus}>
           <TouchableOpacity>
-            <Icon name="plus-circle" size={40} color="#ecf0f1" />
+            <Icon
+              name="plus-circle"
+              size={40}
+              color="#ecf0f1"
+              onPress={() => {
+                this.setState({
+                  visible: !this.state.visible,
+                });
+              }}
+            />
           </TouchableOpacity>
         </View>
+        <Incoming visible={this.state.visible} />
       </View>
     );
   }
