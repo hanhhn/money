@@ -7,6 +7,7 @@ import {SignOut} from '../actions/auth.action';
 
 import OutputScreen from '../screens/output.screen';
 import HeaderContainer from '../containners/header.container';
+import IncommingContainer from '../containners/incoming.container';
 
 class OutputContainer extends Component {
   container = {};
@@ -78,6 +79,7 @@ class OutputContainer extends Component {
       <>
         <HeaderContainer />
         <ContentContainer />
+        <IncommingContainer />
       </>
     );
   }

@@ -51,7 +51,7 @@ export default class Incoming extends Component {
     return (
       <Modal
         animationType="slide"
-        transparent={false}
+        transparent={true}
         visible={this.props.visible}>
         <View>
           <View style={styles.container}>
@@ -142,6 +142,11 @@ const styles = StyleSheet.create({
   container: {
     display: 'flex',
     flexDirection: 'column',
+    backgroundColor: '#fbfbfb',
+    margin: 20,
+    padding: 10,
+    alignItems: 'stretch',
+    justifyContent: 'center',
   },
   header: {
     display: 'flex',
