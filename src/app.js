@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Provider} from 'react-redux';
 import appStore from './app.store';
-import RootContainer from './containners/root.container';
+import AppContainer from './containners/app.container';
 
 export default class App extends Component {
   constructor(props) {
@@ -11,7 +11,7 @@ export default class App extends Component {
   render() {
     return (
       <Provider store={appStore}>
-        <RootContainer />
+        <AppContainer />
       </Provider>
     );
   }

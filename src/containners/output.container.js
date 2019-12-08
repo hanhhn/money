@@ -79,7 +79,6 @@ class OutputContainer extends Component {
       <>
         <HeaderContainer />
         <ContentContainer />
-        <IncommingContainer />
       </>
     );
   }
