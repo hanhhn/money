@@ -1,13 +1,11 @@
 import React, {Component} from 'react';
 import {
-  Modal,
   Text,
   TouchableOpacity,
   View,
   StyleSheet,
   ScrollView,
   TextInput,
-  Button,
   Picker,
   Platform,
 } from 'react-native';
@@ -46,8 +44,12 @@ export default class Incoming extends Component {
   };
 
   UNSAFE_componentWillUpdate() {
-    if (!this.props.screenProps.incoming.show) {
-      this.props.navigation.navigate('RootScreen');
+    const props = this.props.screenProps;
+
+    console.log(this.props);
+
+    if (!props.incoming.show) {
+      this.props.navigation.navigate('MainScreen');
     }
   }
 
