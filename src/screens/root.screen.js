@@ -60,6 +60,14 @@ export default class RootScreen extends Component {
 
     this.container = createAppContainer(mainNavigator);
   }
+
+  UNSAFE_componentWillUpdate() {
+    console.log(this.props.screenProps);
+    if (this.props.screenProps.incoming.show) {
+      this.props.navigation.navigate('IncomingScreen');
+    }
+  }
+
   render() {
     const RootRouter = this.container;
     return <RootRouter />;

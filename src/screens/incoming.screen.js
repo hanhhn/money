@@ -45,94 +45,94 @@ export default class Incoming extends Component {
     this.show('time');
   };
 
+  UNSAFE_componentWillUpdate() {
+    if (!this.props.screenProps.incoming.show) {
+      this.props.navigation.navigate('RootScreen');
+    }
+  }
+
   render() {
     const {show, date, mode} = this.state;
+    const {onHideIncoming} = this.props.screenProps;
 
     return (
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={this.props.visible}>
-        <View>
-          <View style={styles.container}>
-            <View style={styles.header}>
-              <View>
-                <TouchableOpacity>
-                  <Icon name="arrow-left" size={20} color="#bdc3c7" />
-                </TouchableOpacity>
-              </View>
-              <View>
-                <Text style={styles.title}>Thêm chi tiêu</Text>
-              </View>
-              <View>
-                <TouchableOpacity>
-                  <Text style={styles.save}>LƯU</Text>
-                </TouchableOpacity>
-              </View>
+      <View>
+        <View style={styles.container}>
+          <View style={styles.header}>
+            <View>
+              <TouchableOpacity onPress={() => onHideIncoming()}>
+                <Icon name="glass" size={20} color="#bdc3c7" />
+              </TouchableOpacity>
             </View>
-            <View style={styles.content}>
-              <ScrollView>
-                <View style={styles.item}>
-                  <TextInput
-                    style={styles.textInput}
-                    placeholder="Ghi chú.."
-                    multiline={true}
-                  />
-                </View>
-                <View style={styles.item}>
-                  <View style={styles.icon}>
-                    <Icon name="terminal" size={25} color="#000000" />
-                  </View>
-                  <TextInput
-                    style={styles.textInput}
-                    placeholder="1.000.000"
-                    keyboardType="numeric"
-                  />
-                </View>
-                <View style={styles.item}>
-                  <View style={styles.icon}>
-                    <Icon name="calendar" size={25} color="#000000" />
-                  </View>
-                  <View style={styles.textInput}>
-                    <TouchableOpacity
-                      onPress={this.datepicker}
-                      style={{flex: 1}}>
-                      <TextInput
-                        style={{fontSize: 18}}
-                        value="Today"
-                        editable={false}
-                      />
-                    </TouchableOpacity>
-                  </View>
-
-                  {show && (
-                    <DateTimePicker
-                      value={date}
-                      mode={mode}
-                      is24Hour={true}
-                      display="calendar"
-                    />
-                  )}
-                </View>
-                <View style={styles.item}>
-                  <View style={styles.icon}>
-                    <Icon name="question" size={25} color="#000000" />
-                  </View>
-                  <Picker
-                    style={{height: 50, width: 200}}
-                    itemStyle={{backgroundColor: 'red'}}>
-                    <Picker.Item label="Java" value="java" />
-                    <Picker.Item label="JavaScript" value="js" />
-                  </Picker>
-                </View>
-              </ScrollView>
+            <View>
+              <Text style={styles.title}>Thêm chi tiêu</Text>
             </View>
-            <View style={styles.footer}>
-              <Text>Footer</Text>
+            <View>
+              <TouchableOpacity>
+                <Text style={styles.save}>LƯU</Text>
+              </TouchableOpacity>
             </View>
           </View>
+          <View style={styles.content}>
+            <ScrollView>
+              <View style={styles.item}>
+                <TextInput
+                  style={styles.textInput}
+                  placeholder="Ghi chú.."
+                  multiline={true}
+                />
+              </View>
+              <View style={styles.item}>
+                <View style={styles.icon}>
+                  <Icon name="terminal" size={25} color="#000000" />
+                </View>
+                <TextInput
+                  style={styles.textInput}
+                  placeholder="1.000.000"
+                  keyboardType="numeric"
+                />
+              </View>
+              <View style={styles.item}>
+                <View style={styles.icon}>
+                  <Icon name="calendar" size={25} color="#000000" />
+                </View>
+                <View style={styles.textInput}>
+                  <TouchableOpacity onPress={this.datepicker} style={{flex: 1}}>
+                    <TextInput
+                      style={{fontSize: 18}}
+                      value="Today"
+                      editable={false}
+                    />
+                  </TouchableOpacity>
+                </View>
+
+                {show && (
+                  <DateTimePicker
+                    value={date}
+                    mode={mode}
+                    is24Hour={true}
+                    display="calendar"
+                  />
+                )}
+              </View>
+              <View style={styles.item}>
+                <View style={styles.icon}>
+                  <Icon name="question" size={25} color="#000000" />
+                </View>
+                <Picker
+                  style={{height: 50, width: 200}}
+                  itemStyle={{backgroundColor: 'red'}}>
+                  <Picker.Item label="Java" value="java" />
+                  <Picker.Item label="JavaScript" value="js" />
+                </Picker>
+              </View>
+            </ScrollView>
+          </View>
+          <View style={styles.footer}>
+            <Text>Footer</Text>
+          </View>
         </View>
-      </Modal>
+      </View>
     );
   }
 }
@@ -143,8 +143,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     backgroundColor: '#fbfbfb',
-    margin: 20,
-    padding: 10,
     alignItems: 'stretch',
     justifyContent: 'center',
   },
