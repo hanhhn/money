@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {createAppContainer} from 'react-navigation';
 import {createBottomTabNavigator} from 'react-navigation-tabs';
 import AccountContainer from '../containners/account.container';
-import InputScreen from './input.screen';
+import InputContainer from '../containners/input.container';
 import OutputContainer from '../containners/output.container';
 import ReportScreen from './report.screen';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -13,7 +13,7 @@ export default class MainScreen extends Component {
     const mainNavigator = createBottomTabNavigator(
       {
         InputScreen: {
-          screen: InputScreen,
+          screen: InputContainer,
           navigationOptions: {
             tabBarLabel: 'Thu',
             tabBarIcon: ({tintColor}) => (
@@ -66,6 +66,12 @@ export default class MainScreen extends Component {
 
     if (props.incoming.show) {
       this.props.navigation.navigate('IncomingScreen');
+      return;
+    }
+
+    if (props.outgoing.show) {
+      this.props.navigation.navigate('OutgoingScreen');
+      return;
     }
   }
 
