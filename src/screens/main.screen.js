@@ -58,13 +58,11 @@ export default class MainScreen extends Component {
       },
     );
 
-    this.container = createAppContainer(mainNavigator);
+    this.mainNavigator = createAppContainer(mainNavigator);
   }
 
-  componentDidUpdate() {}
-
   render() {
-    const RootRouter = this.container;
-    return <RootRouter />;
+    const MainNavigator = this.mainNavigator;
+    return <MainNavigator />;
   }
 }

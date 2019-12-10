@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 import MainContainer from '../containners/main.container';
-import IncomingScreen from '../screens/incoming.screen';
-import OutgoingScreen from '../screens/outgoing.screen';
+import IncomingContainer from '../containners/incoming.container';
+import OutgoingContainer from '../containners/outgoing.container';
 
 export default class RootScreen extends Component {
   constructor(props) {
@@ -14,10 +14,10 @@ export default class RootScreen extends Component {
           screen: MainContainer,
         },
         IncomingScreen: {
-          screen: IncomingScreen,
+          screen: IncomingContainer,
         },
         OutgoingScreen: {
-          screen: OutgoingScreen,
+          screen: OutgoingContainer,
         },
       },
       {
@@ -35,7 +35,6 @@ export default class RootScreen extends Component {
 
   render() {
     const RootNavigator = this.rootNavigator;
-    // this.props.onInitNavigation(this.rootRef.current.navigation);
     return <RootNavigator />;
   }
 }

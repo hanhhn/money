@@ -30,7 +30,9 @@ export default class InputScreen extends Component {
           </View>
         </ScrollView>
         <View style={styles.footer}>
-          <TouchableOpacity style={styles.plusCircle}>
+          <TouchableOpacity
+            style={styles.plusCircle}
+            onPress={() => this.props.onShowIncomingScreen()}>
             <Text style={styles.plus}>+</Text>
           </TouchableOpacity>
         </View>

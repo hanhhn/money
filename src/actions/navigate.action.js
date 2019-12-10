@@ -1,15 +1,7 @@
 import * as action from '../actions/action';
 
-export const InitNavigation = navigation => {
-  return {
-    type: action.InitNavigation,
-    navigation,
-  };
-};
-
-export const GoTo = (navigation, router) => {
+export const GoTo = router => {
   return dispatch => {
-    navigation.navigate(router);
     dispatch({
       type: action.GoTo,
       router,
@@ -17,20 +9,20 @@ export const GoTo = (navigation, router) => {
   };
 };
 
-export const GoHome = navigation => {
+export const GoHome = () => {
   return dispatch => {
-    dispatch(GoTo(navigation, 'MainScreen'));
+    dispatch(GoTo('MainScreen'));
   };
 };
 
-export const GoIncoming = navigation => {
+export const GoIncoming = () => {
   return dispatch => {
-    dispatch(GoTo(navigation, 'IncomingScreen'));
+    dispatch(GoTo('IncomingScreen'));
   };
 };
 
-export const GoOutcoming = navigation => {
+export const GoOutgoing = () => {
   return dispatch => {
-    dispatch(GoTo(navigation, 'OutgoingScreen'));
+    dispatch(GoTo('OutgoingScreen'));
   };
 };

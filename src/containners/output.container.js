@@ -4,6 +4,7 @@ import {createMaterialTopTabNavigator} from 'react-navigation-tabs';
 import {connect} from 'react-redux';
 import OutputScreen from '../screens/output.screen';
 import Header from '../components/header.component';
+import {GoOutgoing} from '../actions/navigate.action';
 
 class OutputContainer extends Component {
   container = {};
@@ -47,13 +48,29 @@ class OutputContainer extends Component {
   render() {
     const ContentContainer = this.container;
 
+    const headerProps = {
+      navigate: this.props.navigate,
+      onShowOutgoingScreen: this.props.onShowOutgoingScreen,
+    };
+
     return (
       <>
-        <Header />
+        <Header {...headerProps} />
         <ContentContainer />
       </>
     );
   }
 }
 
-export default connect()(OutputContainer);
+export default connect(
+  state => {
+    return {
+      navigate: state.navigateReducer,
+    };
+  },
+  dispatch => {
+    return {
+      onShowOutgoingScreen: () => dispatch(GoOutgoing()),
+    };
+  },
+)(OutputContainer);

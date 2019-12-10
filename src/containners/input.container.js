@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import InputScreen from '../screens/input.screen';
+import {GoIncoming} from '../actions/navigate.action';
 
 class InputContainer extends Component {
   constructor(props) {
@@ -8,8 +9,19 @@ class InputContainer extends Component {
   }
 
   render() {
-    return <InputScreen />;
+    return <InputScreen {...this.props} />;
   }
 }
 
-export default connect()(InputContainer);
+export default connect(
+  state => {
+    return {
+      navigate: state.navigateReducer,
+    };
+  },
+  dispatch => {
+    return {
+      onShowIncomingScreen: () => dispatch(GoIncoming()),
+    };
+  },
+)(InputContainer);

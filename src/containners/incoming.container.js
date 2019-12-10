@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import MainScreen from '../screens/main.screen';
+import IncomingScreen from '../screens/incoming.screen';
 import {GoHome} from '../actions/navigate.action';
 
 class MainContainer extends Component {
@@ -8,14 +8,8 @@ class MainContainer extends Component {
     super(props);
   }
 
-  UNSAFE_componentWillUpdate(nextProps) {
-    if (this.props.navigate.router !== nextProps.navigate.router) {
-      this.props.navigation.navigate(nextProps.navigate.router);
-    }
-  }
-
   render() {
-    return <MainScreen />;
+    return <IncomingScreen {...this.props} />;
   }
 }
 

@@ -48,19 +48,19 @@ export default class IncomingScreen extends Component {
 
   render() {
     const {show, date, mode} = this.state;
-    const {onHideIncoming} = this.props.screenProps;
+    const {onGoHomeScreen} = this.props;
 
     return (
       <View>
         <View style={styles.container}>
           <View style={styles.header}>
             <View>
-              <TouchableOpacity onPress={() => onHideIncoming()}>
+              <TouchableOpacity onPress={() => onGoHomeScreen()}>
                 <AntIcon name="arrowleft" size={20} color="#bdc3c7" />
               </TouchableOpacity>
             </View>
             <View>
-              <Text style={styles.title}>Thêm chi tiêu</Text>
+              <Text style={styles.title}>Thêm thu nhập</Text>
             </View>
             <View>
               <TouchableOpacity>

@@ -2,23 +2,33 @@ import * as act from '../actions/action';
 
 const navigateReducer = (
   state = {
-    navigation: {},
     router: 'MainScreen',
   },
   action,
 ) => {
   switch (action.type) {
-    case act.InitNavigation:
-      return {
-        ...state,
-        navigation: action.navigation,
-        router: 'MainScreen',
-      };
-
     case act.GoTo:
       return {
         ...state,
         router: action.router,
+      };
+
+    case act.GoHome:
+      return {
+        ...state,
+        router: 'MainScreen',
+      };
+
+    case act.GoIncoming:
+      return {
+        ...state,
+        router: 'IncomingScreen',
+      };
+
+    case act.GoOutgoing:
+      return {
+        ...state,
+        router: 'OutgoingScreen',
       };
 
     default:
