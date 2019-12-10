@@ -61,19 +61,7 @@ export default class MainScreen extends Component {
     this.container = createAppContainer(mainNavigator);
   }
 
-  componentDidUpdate() {
-    const props = this.props.screenProps;
-
-    if (props.incoming.show) {
-      this.props.navigation.navigate('IncomingScreen');
-      return;
-    }
-
-    if (props.outgoing.show) {
-      this.props.navigation.navigate('OutgoingScreen');
-      return;
-    }
-  }
+  componentDidUpdate() {}
 
   render() {
     const RootRouter = this.container;

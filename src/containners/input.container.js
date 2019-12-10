@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import InputScreen from '../screens/input.screen';
-import {ShowOutgoing} from '../actions/outgoing.action';
 
 class InputContainer extends Component {
   constructor(props) {
@@ -9,24 +8,8 @@ class InputContainer extends Component {
   }
 
   render() {
-    const props = {
-      outgoing: this.props.outgoing,
-      onShowOutgoing: this.props.onShowOutgoing,
-    };
-
-    return <InputScreen {...props} />;
+    return <InputScreen />;
   }
 }
 
-export default connect(
-  state => {
-    return {
-      outgoing: state.outgoingReducer,
-    };
-  },
-  dispatch => {
-    return {
-      onShowOutgoing: () => dispatch(ShowOutgoing()),
-    };
-  },
-)(InputContainer);
+export default connect()(InputContainer);

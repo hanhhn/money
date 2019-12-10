@@ -14,12 +14,7 @@ export default class Header extends Component {
         </View>
         <View style={styles.plus}>
           <TouchableOpacity>
-            <Icon
-              name="plus-circle"
-              size={40}
-              color="#ecf0f1"
-              onPress={() => this.props.onShowIncoming()}
-            />
+            <Icon name="plus-circle" size={40} color="#ecf0f1" />
           </TouchableOpacity>
         </View>
       </View>

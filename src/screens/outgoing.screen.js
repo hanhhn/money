@@ -44,13 +44,7 @@ export default class OutgoingScreen extends Component {
     this.show('time');
   };
 
-  componentDidUpdate() {
-    const props = this.props.screenProps;
-
-    if (!props.incoming.show) {
-      this.props.navigation.navigate('MainScreen');
-    }
-  }
+  componentDidUpdate() {}
 
   render() {
     const {show, date, mode} = this.state;

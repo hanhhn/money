@@ -1,10 +1,8 @@
 import {combineReducers} from 'redux';
 import authReducer from './reducers/auth.reducer';
-import incomingReducer from './reducers/incoming.reducer';
-import outgoingReducer from './reducers/outgoing.reducer';
+import navigateReducer from './reducers/navigate.reducer';
 
 export default combineReducers({
   authReducer,
-  incomingReducer,
-  outgoingReducer,
+  navigateReducer,
 });
