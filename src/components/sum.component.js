@@ -5,7 +5,6 @@ export default class Sum extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>20/11</Text>
         <Text style={styles.text}>300k</Text>
       </View>
     );

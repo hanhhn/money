@@ -13,7 +13,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {default as AntIcon} from 'react-native-vector-icons/AntDesign';
 
-export default class IncomingScreen extends Component {
+export default class OutgoingScreen extends Component {
   state = {
     date: new Date('2020-06-12T14:42:42'),
     mode: 'date',
@@ -66,7 +66,7 @@ export default class IncomingScreen extends Component {
               </TouchableOpacity>
             </View>
             <View>
-              <Text style={styles.title}>Thêm chi tiêu</Text>
+              <Text style={styles.title}>Thêm thu nhập</Text>
             </View>
             <View>
               <TouchableOpacity>

@@ -10,7 +10,7 @@ export default class Item extends Component {
           <Icon name="plus-circle" size={14} color="red" />
         </View>
         <View style={styles.description}>
-          <Text style={styles.text}>Ăn sáng, ăn trưa, ăn toi</Text>
+          <Text style={styles.text}>Chi tiêu bla bla bla</Text>
         </View>
         <View style={styles.money}>
           <Text style={styles.text}>150k</Text>

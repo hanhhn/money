@@ -35,7 +35,7 @@ export default class MainScreen extends Component {
           navigationOptions: {
             tabBarLabel: 'Báo cáo',
             tabBarIcon: ({tintColor}) => (
-              <Icon name="file-pdf-o" color={tintColor} size={27} />
+              <Icon name="pie-chart" color={tintColor} size={27} />
             ),
           },
         },
@@ -61,7 +61,7 @@ export default class MainScreen extends Component {
     this.container = createAppContainer(mainNavigator);
   }
 
-  UNSAFE_componentWillUpdate() {
+  componentDidUpdate() {
     const props = this.props.screenProps;
 
     if (props.incoming.show) {

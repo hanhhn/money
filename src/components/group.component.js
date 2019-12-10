@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Text, View, TouchableOpacity, StyleSheet} from 'react-native';
 import Item from './item.component';
 import SumItem from './sum.component';
-
+import Icon from 'react-native-vector-icons/AntDesign';
 export default class GroupItem extends Component {
   render() {
     const items = [
@@ -24,6 +24,11 @@ export default class GroupItem extends Component {
 
     return (
       <View style={styles.container}>
+        <View style={styles.date}>
+          <Text>21</Text>
+          <Icon name="arrowdown" size={14} color="green" />
+          <Text>22</Text>
+        </View>
         <View style={styles.items}>
           <View style={styles.item}>
             <Item />
@@ -52,9 +57,16 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     borderColor: 'rgba(0,0,0,0.2)',
-    borderWidth: 0.5,
     alignItems: 'stretch',
     justifyContent: 'space-between',
+    borderWidth: 0.5,
+  },
+  date: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderColor: 'rgba(0,0,0,0.2)',
+    borderRightWidth: 0.5,
+    padding: 2,
   },
   items: {
     display: 'flex',
@@ -64,7 +76,6 @@ const styles = StyleSheet.create({
   },
   item: {
     borderColor: 'rgba(0,0,0,0.2)',
-    borderBottomWidth: 0.5,
     padding: 2,
   },
   sum: {
