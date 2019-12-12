@@ -1,5 +1,6 @@
 export const SignIn = 'SIGNIN';
-export const SignedIn = 'SIGNEDIN';
+export const SignedInFail = 'SIGNEDIN-FAIL';
+export const SignedInSuccess = 'SIGNEDIN-SUCCESS';
 export const SignOut = 'SIGNOUT';
 
 export const InitNavigation = 'GO-Init-Navigation';

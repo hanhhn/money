@@ -7,11 +7,18 @@ import {_setStoreData} from '../cores/services/storage.service';
 import {USER_DATE, ACCESS_TOKEN} from '../constants';
 import * as action from '../actions/action';
 
-export const SignedIn = (isLogged, accessToken) => {
+export const SignedInSuccess = (isLogged, accessToken, email) => {
   return {
-    type: action.SignedIn,
+    type: action.SignedInSuccess,
     isLogged,
     accessToken,
+    email,
+  };
+};
+
+export const SignedInFaild = () => {
+  return {
+    type: action.SignedInSuccess,
   };
 };
 
@@ -22,7 +29,6 @@ export const SignIn = func => {
         .then(result => {
           if (result.isCancelled) {
             Alert.alert('Thông báo !^^', 'Đăng nhập để sử dụng ứng dụng.');
-            dispatch(SignedIn(false));
           } else {
             AccessToken.getCurrentAccessToken().then(data => {
               initializeFirebase();
@@ -34,12 +40,18 @@ export const SignIn = func => {
 
               auth()
                 .signInWithCredential(credential)
-                .then(user => {
-                  _setStoreData(USER_DATE, user);
-                  dispatch(SignedIn(true, data.accessToken));
+                .then(userCredential => {
+                  _setStoreData(USER_DATE, userCredential.user);
+
+                  dispatch(
+                    SignedInSuccess(
+                      true,
+                      data.accessToken,
+                      userCredential.user.email,
+                    ),
+                  );
                 })
                 .catch(() => {
-                  dispatch(SignedIn(false, null));
                   Alert.alert(
                     'Error !^^',
                     'Xảy ra lỗi trong quá trình đăng nhập.',
@@ -64,9 +76,9 @@ export const UserSignedIn = accessToken => {
 
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        dispatch(SignedIn(true, accessToken));
+        dispatch(SignedInSuccess(true, accessToken, user.email));
       } else {
-        dispatch(SignedIn(false, null));
+        dispatch(SignedInFaild());
       }
     });
   };
@@ -80,7 +92,9 @@ export const SignOut = () => {
       .signOut()
       .then(() => {
         _setStoreData(ACCESS_TOKEN, null);
-        dispatch(SignedIn(false, null));
+        dispatch({
+          type: action.SignOut,
+        });
       });
   };
 };
