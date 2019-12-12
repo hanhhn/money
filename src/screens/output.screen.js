@@ -1,10 +1,15 @@
 import React, {Component} from 'react';
 import {Text, View, ScrollView, StyleSheet} from 'react-native';
 import Group from '../components/group.component';
+import {query} from '../cores/services/query.service';
 
 export default class OutputScreen extends Component {
   constructor(props) {
     super(props);
+
+    query().then(() => {
+      console.log('ok');
+    });
 
     this.state = {
       incoming: [
