@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderColor: 'rgba(0,0,0,0.2)',
     borderRightWidth: 0.5,
-    padding: 4,
+    minWidth: 20,
   },
   items: {
     display: 'flex',

@@ -39,17 +39,17 @@ export default class OutputScreen extends Component {
             {
               icon: 'plus',
               note: 'Test 123 ',
-              amount: 123122343,
+              amount: 150000,
             },
             {
               icon: 'plus',
               note: 'Test 123234 ',
-              amount: 431,
+              amount: 20000,
             },
             {
               icon: 'plus',
               note: 'Test 123234 ',
-              amount: 431,
+              amount: 124000,
             },
           ],
         },

@@ -18,11 +18,11 @@ export default class Item extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.icon}>
+        {/* <View style={styles.icon}>
           {this.props.icon && (
             <Icon name={this.props.icon} size={14} color="red" />
           )}
-        </View>
+        </View> */}
         <View style={styles.description}>
           <Text style={styles.text}>{this.props.note}</Text>
         </View>
@@ -48,6 +48,7 @@ const styles = StyleSheet.create({
   },
   description: {
     flex: 1,
+    marginLeft: 3,
   },
   text: {
     flexWrap: 'wrap',
