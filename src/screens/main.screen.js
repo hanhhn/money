@@ -51,7 +51,7 @@ export default class MainScreen extends Component {
       },
       {
         initialRouteName: 'OutputScreen',
-        lazy: true,
+        lazy: false,
         tabBarOptions: {
           activeTintColor: '#ffaf40',
         },

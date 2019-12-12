@@ -22,7 +22,7 @@ export default class RootScreen extends Component {
       },
       {
         initialRouteName: 'MainScreen',
-        lazy: true,
+        lazy: false,
         headerMode: 'none',
         tabBarOptions: {
           activeTintColor: '#ffaf40',

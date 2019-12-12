@@ -3,18 +3,30 @@ import {Text, View, TouchableOpacity, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default class Item extends Component {
+  getAmount(amount) {
+    if (Math.round(amount / 1000000) > 0) {
+      return <Text style={styles.text}>{Math.round(amount / 1000000)}Tr</Text>;
+    }
+
+    if (Math.round(amount / 1000) > 0) {
+      return <Text style={styles.text}>{Math.round(amount / 1000)}K</Text>;
+    }
+
+    return <Text style={styles.text}>{amount}Đ</Text>;
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.icon}>
-          <Icon name="plus-circle" size={14} color="red" />
+          {this.props.icon && (
+            <Icon name={this.props.icon} size={14} color="red" />
+          )}
         </View>
         <View style={styles.description}>
-          <Text style={styles.text}>Chi tiêu bla bla bla</Text>
+          <Text style={styles.text}>{this.props.note}</Text>
         </View>
-        <View style={styles.money}>
-          <Text style={styles.text}>150k</Text>
-        </View>
+        <View style={styles.money}>{this.getAmount(this.props.amount)}</View>
       </View>
     );
   }

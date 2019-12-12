@@ -10,22 +10,49 @@ import Group from '../components/group.component';
 import Card from '../components/card.component';
 
 export default class InputScreen extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      incoming: [
+        {
+          timeline: {
+            when: 1,
+          },
+          items: [
+            {
+              icon: 'plus',
+              note: 'Test 123 ',
+              amount: 123123,
+            },
+            {
+              icon: 'plus',
+              note: 'Test 123234 ',
+              amount: 431,
+            },
+            {
+              icon: 'plus',
+              note: 'Test 123234 ',
+              amount: 431,
+            },
+          ],
+        },
+      ],
+    };
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <ScrollView style={{paddingLeft: 10, paddingRight: 10, paddingTop: 5}}>
+        <ScrollView style={{paddingLeft: 5, paddingRight: 5, paddingTop: 5}}>
           <View style={styles.content}>
             <View style={{marginBottom: 5}}>
               <Card />
             </View>
             <View style={{padding: 1}}>
-              <Group />
-              <Group />
-              <Group />
-              <Group />
-              <Group />
-              <Group />
-              <Group />
+              {this.state.incoming &&
+                this.state.incoming.map((value, index) => {
+                  return <Group key={index} {...value} />;
+                })}
             </View>
           </View>
         </ScrollView>
