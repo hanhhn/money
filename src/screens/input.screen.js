@@ -13,30 +13,7 @@ export default class InputScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      incoming: [
-        {
-          timeline: {
-            when: 1,
-          },
-          items: [
-            {
-              icon: 'plus',
-              note: 'Test 123 ',
-              amount: 123123,
-            },
-            {
-              icon: 'plus',
-              note: 'Test 123234 ',
-              amount: 431,
-            },
-            {
-              icon: 'plus',
-              note: 'Test 123234 ',
-              amount: 431,
-            },
-          ],
-        },
-      ],
+      incoming: [],
     };
   }
 

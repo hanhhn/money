@@ -1,23 +1,21 @@
 import React, {Component} from 'react';
-import {Text, View, TouchableOpacity, StyleSheet} from 'react-native';
+import {Text, View, StyleSheet} from 'react-native';
 import Item from './item.component';
 import Icon from 'react-native-vector-icons/AntDesign';
 export default class GroupItem extends Component {
   getTimeline() {
-    if (this.props.timeline) {
-      if (this.props.timeline.when) {
-        return <Text>{this.props.timeline.when}</Text>;
-      }
+    if (this.props.from && this.props.from === this.props.to) {
+      return <Text>{this.props.from}</Text>;
+    }
 
-      if (this.props.timeline.from && this.props.timeline.to) {
-        return (
-          <>
-            <Text>{this.props.timeline.from}</Text>
-            <Icon name="arrowdown" size={14} color="green" />
-            <Text>{this.props.timeline.to}</Text>
-          </>
-        );
-      }
+    if (this.props.from && this.props.to) {
+      return (
+        <>
+          <Text>{this.props.from}</Text>
+          <Icon name="arrowdown" size={14} color="green" />
+          <Text>{this.props.to}</Text>
+        </>
+      );
     }
   }
 
@@ -25,14 +23,12 @@ export default class GroupItem extends Component {
     if (this.props.items) {
       return this.props.items.map((value, index) => {
         return (
-          <View key={index}>
-            <Item
-              style={styles.item}
-              icon={value.icon}
-              note={value.note}
-              amount={value.amount}
-            />
-          </View>
+          <Item
+            key={index}
+            icon={value.icon}
+            note={value.note}
+            amount={value.amount}
+          />
         );
       });
     }
@@ -45,14 +41,12 @@ export default class GroupItem extends Component {
         amount += value.amount;
       });
 
-      if (Math.round(amount / 1000000) > 0) {
-        return (
-          <Text style={styles.text}>{Math.round(amount / 1000000)}Tr</Text>
-        );
+      if (Math.round(amount / 1000000) > 1) {
+        return amount / 1000000 + 'Tr';
       }
 
       if (Math.round(amount / 1000) > 0) {
-        return <Text style={styles.text}>{Math.round(amount / 1000)}K</Text>;
+        return amount / 1000 + 'K';
       }
     }
   }
@@ -61,8 +55,12 @@ export default class GroupItem extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.timeline}>{this.getTimeline()}</View>
-        <View style={styles.items}>{this.getItems()}</View>
-        <View style={styles.sum}>{this.getSum()}</View>
+        <View style={styles.items}>
+          <View style={styles.item}>{this.getItems()}</View>
+        </View>
+        <View style={styles.sum}>
+          <Text style={styles.text}>{this.getSum()}</Text>
+        </View>
       </View>
     );
   }
@@ -86,14 +84,13 @@ const styles = StyleSheet.create({
     minWidth: 20,
   },
   items: {
-    display: 'flex',
     flex: 1,
-    flexDirection: 'column',
-    alignContent: 'stretch',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
   },
   item: {
-    borderColor: 'rgba(0,0,0,0.2)',
-    padding: 2,
+    flex: 1,
   },
   sum: {
     justifyContent: 'center',
@@ -101,7 +98,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(0,0,0,0.2)',
     borderLeftWidth: 0.5,
     textAlign: 'center',
-    minWidth: 55,
+    minWidth: 65,
   },
   text: {
     color: '#85bb65',
