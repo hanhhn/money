@@ -14,80 +14,47 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {default as AntIcon} from 'react-native-vector-icons/AntDesign';
 
 export default class OutgoingScreen extends Component {
-  state = {
-    date: new Date('2020-06-12T14:42:42'),
-    mode: 'date',
-    show: false,
-  };
-
-  setDate = (event, date) => {
-    date = date || this.state.date;
-
-    this.setState({
-      show: Platform.OS === 'ios' ? true : false,
-      date,
-    });
-  };
-
-  show = mode => {
-    this.setState({
-      show: true,
-      mode,
-    });
-  };
-
-  datepicker = () => {
-    this.show('date');
-  };
-
-  timepicker = () => {
-    this.show('time');
-  };
-
-  componentDidUpdate() {}
-
   render() {
-    const {show, date, mode} = this.state;
     const {onGoHomeScreen} = this.props;
 
     return (
-      <View>
-        <View style={styles.container}>
-          <View style={styles.header}>
-            <View>
-              <TouchableOpacity onPress={() => onGoHomeScreen()}>
-                <AntIcon name="arrowleft" size={20} color="#bdc3c7" />
-              </TouchableOpacity>
-            </View>
-            <View>
-              <Text style={styles.title}>Thêm chi tiệu</Text>
-            </View>
-            <View>
-              <TouchableOpacity>
-                <Text style={styles.save}>LƯU</Text>
-              </TouchableOpacity>
-            </View>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <View>
+            <TouchableOpacity onPress={() => onGoHomeScreen()}>
+              <AntIcon name="arrowleft" size={20} color="#bdc3c7" />
+            </TouchableOpacity>
           </View>
-          <View style={styles.content}>
-            <ScrollView>
-              <View style={styles.item}>
-                <TextInput
-                  style={styles.textInput}
-                  placeholder="Ghi chú.."
-                  multiline={true}
-                />
+          <View>
+            <Text style={styles.title}>Thêm chi tiêu</Text>
+          </View>
+          <View>
+            <TouchableOpacity>
+              <Text style={styles.save}>LƯU</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View style={styles.content}>
+          <ScrollView>
+            <View style={styles.item}>
+              <TextInput
+                style={styles.textInput}
+                placeholder="Ghi chú.."
+                multiline={true}
+              />
+            </View>
+            <View style={styles.item}>
+              <View style={styles.icon}>
+                <Icon name="terminal" size={25} color="#000000" />
               </View>
-              <View style={styles.item}>
-                <View style={styles.icon}>
-                  <Icon name="terminal" size={25} color="#000000" />
-                </View>
-                <TextInput
-                  style={styles.textInput}
-                  placeholder="1.000.000"
-                  keyboardType="numeric"
-                />
-              </View>
-              <View style={styles.item}>
+              <TextInput
+                style={styles.textInput}
+                placeholder="1.000.000"
+                keyboardType="numeric"
+              />
+            </View>
+            <View style={styles.itemGroup}>
+              <View style={{flex: 1, flexDirection: 'row'}}>
                 <View style={styles.icon}>
                   <Icon name="calendar" size={25} color="#000000" />
                 </View>
@@ -100,32 +67,37 @@ export default class OutgoingScreen extends Component {
                     />
                   </TouchableOpacity>
                 </View>
-
-                {show && (
-                  <DateTimePicker
-                    value={date}
-                    mode={mode}
-                    is24Hour={true}
-                    display="calendar"
-                  />
-                )}
               </View>
-              <View style={styles.item}>
+              <View style={{flex: 1, flexDirection: 'row'}}>
                 <View style={styles.icon}>
-                  <Icon name="question" size={25} color="#000000" />
+                  <Icon name="calendar" size={25} color="#000000" />
                 </View>
-                <Picker
-                  style={{height: 50, width: 200}}
-                  itemStyle={{backgroundColor: 'red'}}>
-                  <Picker.Item label="Java" value="java" />
-                  <Picker.Item label="JavaScript" value="js" />
-                </Picker>
+                <View style={styles.textInput}>
+                  <TouchableOpacity onPress={this.datepicker} style={{flex: 1}}>
+                    <TextInput
+                      style={{fontSize: 18}}
+                      value="Today"
+                      editable={false}
+                    />
+                  </TouchableOpacity>
+                </View>
               </View>
-            </ScrollView>
-          </View>
-          <View style={styles.footer}>
-            <Text>Footer</Text>
-          </View>
+            </View>
+            <View style={styles.item}>
+              <View style={styles.icon}>
+                <Icon name="question" size={25} color="#000000" />
+              </View>
+              <Picker
+                style={{height: 50, width: 200}}
+                itemStyle={{backgroundColor: 'red'}}>
+                <Picker.Item label="Java" value="java" />
+                <Picker.Item label="JavaScript" value="js" />
+              </Picker>
+            </View>
+          </ScrollView>
+        </View>
+        <View style={styles.footer}>
+          <Text>Footer</Text>
         </View>
       </View>
     );
@@ -136,10 +108,11 @@ export default class OutgoingScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     display: 'flex',
+    height: '100%',
     flexDirection: 'column',
     backgroundColor: '#fbfbfb',
     alignItems: 'stretch',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
   },
   header: {
     display: 'flex',
@@ -161,11 +134,20 @@ const styles = StyleSheet.create({
   save: {
     fontSize: 20,
     fontWeight: '600',
+    textTransform: 'uppercase',
   },
   content: {
     padding: 10,
   },
   item: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    paddingTop: 10,
+    paddingBottom: 10,
+  },
+  itemGroup: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-start',
