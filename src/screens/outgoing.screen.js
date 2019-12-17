@@ -22,7 +22,14 @@ export default class OutgoingScreen extends Component {
       duringDay: true,
       categories: [],
       category: '',
+      fromDate: new Date(),
+      toDate: new Date(),
+      showFromDate: false,
+      showToDate: false,
     };
+
+    this.onFromDatePress = this.onFromDatePress.bind(this);
+    this.onToDatePress = this.onToDatePress.bind(this);
   }
 
   UNSAFE_componentWillMount() {
@@ -54,9 +61,35 @@ export default class OutgoingScreen extends Component {
     });
   }
 
-  onFromDateChange() {}
+  onFromDatePress() {
+    this.setState({
+      ...this.state,
+      showFromDate: true,
+    });
+  }
 
-  onToDateChange() {}
+  onFromDateChange(event, date) {
+    this.setState({
+      ...this.state,
+      showFromDate: Platform.OS === 'ios' ? true : false,
+      fromDate: date,
+    });
+  }
+
+  onToDatePress() {
+    this.setState({
+      ...this.state,
+      showToDate: true,
+    });
+  }
+
+  onToDateChange(event, date) {
+    this.setState({
+      ...this.state,
+      showToDate: Platform.OS === 'ios' ? true : false,
+      toDate: date,
+    });
+  }
 
   render() {
     const {onGoHomeScreen} = this.props;
@@ -125,7 +158,7 @@ export default class OutgoingScreen extends Component {
                 <View style={styles.icon}>
                   <Switch
                     value={this.state.duringDay}
-                    onValueChange={() => this.onDuringDaySwitch()}
+                    onValueChange={this.onDuringDaySwitch}
                   />
                 </View>
                 <View style={styles.icon}>
@@ -139,7 +172,9 @@ export default class OutgoingScreen extends Component {
                   <Icon name="calendar" size={25} color="#000000" />
                 </View>
                 <View style={styles.textInput}>
-                  <TouchableOpacity onPress={this.datepicker} style={{flex: 1}}>
+                  <TouchableOpacity
+                    onPress={this.onFromDatePress}
+                    style={{flex: 1}}>
                     <TextInput
                       style={{fontSize: 18}}
                       value="Hôm nay"
@@ -158,7 +193,9 @@ export default class OutgoingScreen extends Component {
                   <Icon name="calendar" size={25} color="#000000" />
                 </View>
                 <View style={styles.textInput}>
-                  <TouchableOpacity onPress={this.datepicker} style={{flex: 1}}>
+                  <TouchableOpacity
+                    onPress={this.onToDatePress}
+                    style={{flex: 1}}>
                     <TextInput
                       style={{fontSize: 18}}
                       value="Today"
@@ -171,7 +208,36 @@ export default class OutgoingScreen extends Component {
           </ScrollView>
         </View>
         <View style={styles.footer}>
-          <Text>Footer</Text>
+          {this.state.showFromDate && (
+            <DateTimePicker
+              value={this.state.fromDate}
+              mode="date"
+              is24Hour={true}
+              display="default"
+              onChange={this.onFromDateChange}
+              onTouchCancel={() => {
+                this.setState({
+                  ...this.state,
+                  showFromDate: Platform.OS === 'ios' ? true : false,
+                });
+              }}
+            />
+          )}
+          {this.state.showToDate && (
+            <DateTimePicker
+              value={this.state.toDate}
+              mode="date"
+              is24Hour={true}
+              display="default"
+              onChange={this.onToDateChange}
+              onTouchCancel={() => {
+                this.setState({
+                  ...this.state,
+                  showToDate: Platform.OS === 'ios' ? true : false,
+                });
+              }}
+            />
+          )}
         </View>
       </View>
     );
