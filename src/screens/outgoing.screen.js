@@ -8,12 +8,56 @@ import {
   TextInput,
   Picker,
   Platform,
+  Switch,
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {default as AntIcon} from 'react-native-vector-icons/AntDesign';
+import {getCategory} from '../cores/helpers/utils.helper';
 
 export default class OutgoingScreen extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      duringDay: true,
+      categories: [],
+      category: '',
+    };
+  }
+
+  UNSAFE_componentWillMount() {
+    this.setState({
+      ...this.state,
+      categories: getCategory(),
+    });
+  }
+
+  onDuringDaySwitch() {
+    this.setState({
+      ...this.state,
+      duringDay: !this.state.duringDay,
+    });
+  }
+
+  onNoteChange(value) {
+    console.log(value);
+  }
+
+  onAmountChange(value) {
+    console.log(value);
+  }
+
+  onCategoryChange(itemValue, itemIndex) {
+    this.setState({
+      ...this.state,
+      category: itemValue,
+    });
+  }
+
+  onFromDateChange() {}
+
+  onToDateChange() {}
+
   render() {
     const {onGoHomeScreen} = this.props;
 
@@ -40,6 +84,7 @@ export default class OutgoingScreen extends Component {
               <TextInput
                 style={styles.textInput}
                 placeholder="Ghi chú.."
+                onChangeText={value => this.onNoteChange(value)}
                 multiline={true}
               />
             </View>
@@ -51,7 +96,42 @@ export default class OutgoingScreen extends Component {
                 style={styles.textInput}
                 placeholder="1.000.000"
                 keyboardType="numeric"
+                onChangeText={value => this.onAmountChange(value)}
               />
+            </View>
+            <View style={styles.itemGroup}>
+              <View style={{flex: 1, flexDirection: 'row'}}>
+                <View style={styles.icon}>
+                  <Icon name="question" size={25} color="#000000" />
+                </View>
+                <Picker
+                  style={{height: 50, width: 150}}
+                  selectedValue={this.state.category}
+                  onValueChange={(itemValue, itemIndex) =>
+                    this.onCategoryChange(itemValue, itemIndex)
+                  }>
+                  {this.state.categories.map(item => {
+                    return (
+                      <Picker.Item
+                        key={item.value}
+                        label={item.display}
+                        value={item.value}
+                      />
+                    );
+                  })}
+                </Picker>
+              </View>
+              <View style={{flex: 1, flexDirection: 'row'}}>
+                <View style={styles.icon}>
+                  <Switch
+                    value={this.state.duringDay}
+                    onValueChange={() => this.onDuringDaySwitch()}
+                  />
+                </View>
+                <View style={styles.icon}>
+                  <Text>Chi tiêu trong ngày</Text>
+                </View>
+              </View>
             </View>
             <View style={styles.itemGroup}>
               <View style={{flex: 1, flexDirection: 'row'}}>
@@ -62,13 +142,18 @@ export default class OutgoingScreen extends Component {
                   <TouchableOpacity onPress={this.datepicker} style={{flex: 1}}>
                     <TextInput
                       style={{fontSize: 18}}
-                      value="Today"
+                      value="Hôm nay"
                       editable={false}
                     />
                   </TouchableOpacity>
                 </View>
               </View>
-              <View style={{flex: 1, flexDirection: 'row'}}>
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: 'row',
+                  display: this.state.duringDay ? 'none' : 'flex',
+                }}>
                 <View style={styles.icon}>
                   <Icon name="calendar" size={25} color="#000000" />
                 </View>
@@ -82,17 +167,6 @@ export default class OutgoingScreen extends Component {
                   </TouchableOpacity>
                 </View>
               </View>
-            </View>
-            <View style={styles.item}>
-              <View style={styles.icon}>
-                <Icon name="question" size={25} color="#000000" />
-              </View>
-              <Picker
-                style={{height: 50, width: 200}}
-                itemStyle={{backgroundColor: 'red'}}>
-                <Picker.Item label="Java" value="java" />
-                <Picker.Item label="JavaScript" value="js" />
-              </Picker>
             </View>
           </ScrollView>
         </View>

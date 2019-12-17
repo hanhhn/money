@@ -79,3 +79,73 @@ export function toQueryString(obj) {
     return '&' + str.join('&');
   }
 }
+
+export function getCategory() {
+  return [
+    {
+      value: 'eating',
+      display: 'Ăn uống',
+      orderBy: 1,
+    },
+    {
+      value: 'go',
+      display: 'Đi lại',
+      orderBy: 1,
+    },
+    {
+      value: 'shopping',
+      display: 'Mua sắm',
+      orderBy: 1,
+    },
+    {
+      value: 'dissipated',
+      display: 'Ăn chơi',
+      orderBy: 1,
+    },
+    {
+      value: 'education',
+      display: 'Học hành',
+      orderBy: 1,
+    },
+    {
+      value: 'health',
+      display: 'Sức khỏe',
+      orderBy: 1,
+    },
+    {
+      value: 'house',
+      display: 'Nhà cửa',
+      orderBy: 1,
+    },
+    {
+      value: 'wedding',
+      display: 'Cưới hỏi',
+      orderBy: 1,
+    },
+    {
+      value: 'save',
+      display: 'Tiết kiệm',
+      orderBy: 1,
+    },
+    {
+      value: 'giveaway',
+      display: 'Cho đi',
+      orderBy: 1,
+    },
+    {
+      value: 'orther',
+      display: 'Khác',
+      orderBy: 2,
+    },
+  ].sort((a, b) => {
+    if (a.orderBy > b.orderBy) {
+      return 1;
+    }
+
+    if (b.orderBy > a.orderBy) {
+      return -1;
+    }
+
+    return 0;
+  });
+}
