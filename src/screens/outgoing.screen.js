@@ -8,12 +8,13 @@ import {
   TextInput,
   Picker,
   Platform,
+  Button,
   Switch,
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {default as AntIcon} from 'react-native-vector-icons/AntDesign';
-import {getCategory} from '../cores/helpers/utils.helper';
+import {getCategory, dateConverter} from '../cores/helpers/utils.helper';
 
 export default class OutgoingScreen extends Component {
   constructor(props) {
@@ -26,10 +27,16 @@ export default class OutgoingScreen extends Component {
       toDate: new Date(),
       showFromDate: false,
       showToDate: false,
+      date: new Date('2020-06-12T14:42:42'),
+      mode: 'date',
+      show: false,
     };
 
+    this.onDuringDaySwitch = this.onDuringDaySwitch.bind(this);
     this.onFromDatePress = this.onFromDatePress.bind(this);
     this.onToDatePress = this.onToDatePress.bind(this);
+    this.onFromDateChange = this.onFromDateChange.bind(this);
+    this.onToDateChange = this.onToDateChange.bind(this);
   }
 
   UNSAFE_componentWillMount() {
@@ -69,6 +76,8 @@ export default class OutgoingScreen extends Component {
   }
 
   onFromDateChange(event, date) {
+    date = date || this.state.fromDate;
+
     this.setState({
       ...this.state,
       showFromDate: Platform.OS === 'ios' ? true : false,
@@ -84,6 +93,8 @@ export default class OutgoingScreen extends Component {
   }
 
   onToDateChange(event, date) {
+    date = date || this.state.toDate;
+
     this.setState({
       ...this.state,
       showToDate: Platform.OS === 'ios' ? true : false,
@@ -177,7 +188,7 @@ export default class OutgoingScreen extends Component {
                     style={{flex: 1}}>
                     <TextInput
                       style={{fontSize: 18}}
-                      value="Hôm nay"
+                      value={dateConverter(this.state.fromDate)}
                       editable={false}
                     />
                   </TouchableOpacity>
@@ -198,7 +209,7 @@ export default class OutgoingScreen extends Component {
                     style={{flex: 1}}>
                     <TextInput
                       style={{fontSize: 18}}
-                      value="Today"
+                      value={dateConverter(this.state.toDate)}
                       editable={false}
                     />
                   </TouchableOpacity>
@@ -215,12 +226,6 @@ export default class OutgoingScreen extends Component {
               is24Hour={true}
               display="default"
               onChange={this.onFromDateChange}
-              onTouchCancel={() => {
-                this.setState({
-                  ...this.state,
-                  showFromDate: Platform.OS === 'ios' ? true : false,
-                });
-              }}
             />
           )}
           {this.state.showToDate && (
@@ -230,12 +235,6 @@ export default class OutgoingScreen extends Component {
               is24Hour={true}
               display="default"
               onChange={this.onToDateChange}
-              onTouchCancel={() => {
-                this.setState({
-                  ...this.state,
-                  showToDate: Platform.OS === 'ios' ? true : false,
-                });
-              }}
             />
           )}
         </View>

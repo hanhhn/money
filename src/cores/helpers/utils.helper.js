@@ -20,6 +20,23 @@ export function formatDate(date, format) {
   }
 }
 
+export function dateConverter(date) {
+  var cur = new Date();
+  if (typeof date !== typeof cur) {
+    return 'Hôm nay';
+  }
+
+  if (
+    date.getFullYear() === cur.getFullYear() &&
+    cur.getMonth() === date.getMonth() &&
+    cur.getDate() === date.getDate()
+  ) {
+    return 'Hôm nay';
+  }
+
+  return formatDate(date, 'dd/MM/yyyy');
+}
+
 export function fromDate(value) {
   return new Date(value);
 }
