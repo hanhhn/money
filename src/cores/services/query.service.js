@@ -1,40 +1,37 @@
 import firestore from '@react-native-firebase/firestore';
 
 export const addOutgoingItem = async request => {
-  const collection = firestore()
+  const collectionRef = firestore()
     .collection('outgoings')
     .doc(request.email)
-    .collection(request.year)
-    .doc(request.month)
+    .collection(request.year.toString())
+    .doc(request.month.toString())
     .collection('items');
 
-  const isExists = await collection
+  const query = await collectionRef.get();
+
+  if (query.empty) {
+    await collectionRef.doc().set({
+      from: request.from,
+      to: request.to,
+    });
+  }
+
+  const subQuery = await collectionRef
     .where('from', '==', request.from)
     .where('to', '==', request.to)
     .get();
 
-  if (!isExists.empty) {
-    collection
+  subQuery.forEach(documentSnap => {
+    documentSnap.ref
+      .collection('items')
       .doc()
-      .set({from: request.from, to: request.to})
-      .then(() => {});
-  } else {
-    const item = await collection
-      .where('from', '==', request.from)
-      .where('to', '==', request.to)
-      .get();
-
-    item.forEach(documentSnap => {
-      documentSnap.ref
-        .collection('items')
-        .doc()
-        .set({
-          note: request.note,
-          category: request.category,
-          amount: request.amount,
-        });
-    });
-  }
+      .set({
+        note: request.note,
+        category: request.category,
+        amount: request.amount,
+      });
+  });
 };
 
 export const queryOutgoingItems = async (email, year, month) => {

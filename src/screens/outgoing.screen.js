@@ -14,6 +14,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {default as AntIcon} from 'react-native-vector-icons/AntDesign';
 import {getCategory, dateConverter} from '../cores/helpers/utils.helper';
+import {addOutgoingItem} from '../cores/services/query.service';
 
 export default class OutgoingScreen extends Component {
   now = new Date();
@@ -63,8 +64,9 @@ export default class OutgoingScreen extends Component {
   }
 
   onAmountChange(value) {
+    const num = Number(value);
     this.setState({
-      amount: value ? value : 0,
+      amount: num ? num : 0,
     });
   }
 
@@ -106,6 +108,9 @@ export default class OutgoingScreen extends Component {
 
   onSaveOutgoing() {
     const data = {
+      email: 'hngochanh@outlook.com',
+      year: this.now.getFullYear(),
+      month: this.now.getMonth() + 1,
       note: this.state.note,
       amount: this.state.amount,
       category: this.state.category,
@@ -114,6 +119,8 @@ export default class OutgoingScreen extends Component {
         ? this.state.fromDate.getDate()
         : this.state.toDate.getDate(),
     };
+
+    addOutgoingItem(data);
   }
 
   render() {
