@@ -8,7 +8,6 @@ import {
   TextInput,
   Picker,
   Platform,
-  Button,
   Switch,
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -17,21 +16,24 @@ import {default as AntIcon} from 'react-native-vector-icons/AntDesign';
 import {getCategory, dateConverter} from '../cores/helpers/utils.helper';
 
 export default class OutgoingScreen extends Component {
+  now = new Date();
+
   constructor(props) {
     super(props);
     this.state = {
       duringDay: true,
+      showFromDate: false,
+      showToDate: false,
       categories: [],
+      note: '',
+      amount: 0,
       category: '',
       fromDate: new Date(),
       toDate: new Date(),
-      showFromDate: false,
-      showToDate: false,
-      date: new Date('2020-06-12T14:42:42'),
-      mode: 'date',
-      show: false,
     };
 
+    this.onNoteChange = this.onNoteChange.bind(this);
+    this.onAmountChange = this.onAmountChange.bind(this);
     this.onDuringDaySwitch = this.onDuringDaySwitch.bind(this);
     this.onFromDatePress = this.onFromDatePress.bind(this);
     this.onToDatePress = this.onToDatePress.bind(this);
@@ -40,37 +42,40 @@ export default class OutgoingScreen extends Component {
   }
 
   UNSAFE_componentWillMount() {
+    const categories = getCategory();
     this.setState({
-      ...this.state,
-      categories: getCategory(),
+      categories: categories,
+      category: categories[0].value,
     });
   }
 
   onDuringDaySwitch() {
     this.setState({
-      ...this.state,
       duringDay: !this.state.duringDay,
+      toDate: this.now,
     });
   }
 
   onNoteChange(value) {
-    console.log(value);
+    this.setState({
+      note: value,
+    });
   }
 
   onAmountChange(value) {
-    console.log(value);
+    this.setState({
+      amount: value ? value : 0,
+    });
   }
 
   onCategoryChange(itemValue, itemIndex) {
     this.setState({
-      ...this.state,
       category: itemValue,
     });
   }
 
   onFromDatePress() {
     this.setState({
-      ...this.state,
       showFromDate: true,
     });
   }
@@ -79,7 +84,6 @@ export default class OutgoingScreen extends Component {
     date = date || this.state.fromDate;
 
     this.setState({
-      ...this.state,
       showFromDate: Platform.OS === 'ios' ? true : false,
       fromDate: date,
     });
@@ -87,7 +91,6 @@ export default class OutgoingScreen extends Component {
 
   onToDatePress() {
     this.setState({
-      ...this.state,
       showToDate: true,
     });
   }
@@ -96,10 +99,21 @@ export default class OutgoingScreen extends Component {
     date = date || this.state.toDate;
 
     this.setState({
-      ...this.state,
       showToDate: Platform.OS === 'ios' ? true : false,
       toDate: date,
     });
+  }
+
+  onSaveOutgoing() {
+    const data = {
+      note: this.state.note,
+      amount: this.state.amount,
+      category: this.state.category,
+      from: this.state.fromDate.getDate(),
+      to: this.state.duringDay
+        ? this.state.fromDate.getDate()
+        : this.state.toDate.getDate(),
+    };
   }
 
   render() {
@@ -109,7 +123,11 @@ export default class OutgoingScreen extends Component {
       <View style={styles.container}>
         <View style={styles.header}>
           <View>
-            <TouchableOpacity onPress={() => onGoHomeScreen()}>
+            <TouchableOpacity
+              onPress={() => {
+                onGoHomeScreen();
+                console.log(this.state);
+              }}>
               <AntIcon name="arrowleft" size={20} color="#bdc3c7" />
             </TouchableOpacity>
           </View>
@@ -117,7 +135,7 @@ export default class OutgoingScreen extends Component {
             <Text style={styles.title}>Thêm chi tiêu</Text>
           </View>
           <View>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => this.onSaveOutgoing()}>
               <Text style={styles.save}>LƯU</Text>
             </TouchableOpacity>
           </View>
@@ -128,7 +146,7 @@ export default class OutgoingScreen extends Component {
               <TextInput
                 style={styles.textInput}
                 placeholder="Ghi chú.."
-                onChangeText={value => this.onNoteChange(value)}
+                onChangeText={this.onNoteChange}
                 multiline={true}
               />
             </View>
@@ -140,7 +158,7 @@ export default class OutgoingScreen extends Component {
                 style={styles.textInput}
                 placeholder="1.000.000"
                 keyboardType="numeric"
-                onChangeText={value => this.onAmountChange(value)}
+                onChangeText={this.onAmountChange}
               />
             </View>
             <View style={styles.itemGroup}>
@@ -225,6 +243,7 @@ export default class OutgoingScreen extends Component {
               mode="date"
               is24Hour={true}
               display="default"
+              maximumDate={this.state.toDate}
               onChange={this.onFromDateChange}
             />
           )}
@@ -234,6 +253,8 @@ export default class OutgoingScreen extends Component {
               mode="date"
               is24Hour={true}
               display="default"
+              minimumDate={this.state.fromDate}
+              maximumDate={new Date()}
               onChange={this.onToDateChange}
             />
           )}
