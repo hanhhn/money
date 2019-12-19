@@ -1,4 +1,5 @@
 import firestore from '@react-native-firebase/firestore';
+import {Alert} from 'react-native';
 
 export const addOutgoingItem = async request => {
   const collectionRef = firestore()
@@ -8,7 +9,10 @@ export const addOutgoingItem = async request => {
     .doc(request.month.toString())
     .collection('items');
 
-  const query = await collectionRef.get();
+  const query = await collectionRef
+    .where('from', '==', request.from)
+    .where('to', '==', request.to)
+    .get();
 
   if (query.empty) {
     await collectionRef.doc().set({
@@ -17,12 +21,7 @@ export const addOutgoingItem = async request => {
     });
   }
 
-  const subQuery = await collectionRef
-    .where('from', '==', request.from)
-    .where('to', '==', request.to)
-    .get();
-
-  subQuery.forEach(documentSnap => {
+  query.forEach(documentSnap => {
     documentSnap.ref
       .collection('items')
       .doc()
@@ -30,6 +29,9 @@ export const addOutgoingItem = async request => {
         note: request.note,
         category: request.category,
         amount: request.amount,
+      })
+      .then(() => {
+        console.log('OK');
       });
   });
 };
@@ -41,6 +43,7 @@ export const queryOutgoingItems = async (email, year, month) => {
     .collection(year)
     .doc(month)
     .collection('items')
+    .orderBy('from', 'asc')
     .get();
 
   let result = [];

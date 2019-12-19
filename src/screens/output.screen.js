@@ -13,7 +13,7 @@ export default class OutputScreen extends Component {
   }
 
   UNSAFE_componentWillMount() {
-    queryOutgoingItems('hngochanh@outlook.com', '2020', '01').then(data => {
+    queryOutgoingItems('hngochanh@outlook.com', '2019', '12').then(data => {
       this.setState({
         outgoings: data,
       });
