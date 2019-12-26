@@ -15,6 +15,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {default as AntIcon} from 'react-native-vector-icons/AntDesign';
 import {getCategory, dateConverter} from '../cores/helpers/utils.helper';
 import {addOutgoingItem} from '../cores/services/query.service';
+import validator from '../cores/helpers/validator.helper';
 
 export default class OutgoingScreen extends Component {
   now = new Date();
@@ -22,12 +23,15 @@ export default class OutgoingScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      submited: false,
       duringDay: true,
       showFromDate: false,
       showToDate: false,
       categories: [],
       note: '',
+      noteValid: false,
       amount: 0,
+      amountValid: false,
       category: '',
       fromDate: new Date(),
       toDate: new Date(),
@@ -58,8 +62,14 @@ export default class OutgoingScreen extends Component {
   }
 
   onNoteChange(value) {
+    const valid =
+      validator({value, type: 'required'}) &&
+      validator({value, minLength: 5, type: 'minLength'}) &&
+      validator({value, maxLength: 5, type: 'maxLength'});
+
     this.setState({
       note: value,
+      noteValid: valid,
     });
   }
 
@@ -151,7 +161,11 @@ export default class OutgoingScreen extends Component {
           <ScrollView>
             <View style={styles.item}>
               <TextInput
-                style={styles.textInput}
+                style={
+                  this.state.submited && this.state.noteValid
+                    ? styles.textInput
+                    : styles.error
+                }
                 placeholder="Ghi chú.."
                 onChangeText={this.onNoteChange}
                 multiline={true}
@@ -162,7 +176,11 @@ export default class OutgoingScreen extends Component {
                 <Icon name="terminal" size={25} color="#000000" />
               </View>
               <TextInput
-                style={styles.textInput}
+                style={
+                  this.submited && this.state.noteValid
+                    ? styles.textInput
+                    : styles.error
+                }
                 placeholder="1.000.000"
                 keyboardType="numeric"
                 onChangeText={this.onAmountChange}
@@ -332,7 +350,13 @@ const styles = StyleSheet.create({
     fontSize: 18,
     flex: 1,
     borderColor: '#bdc3c7',
-    borderBottomWidth: 0.5,
+    borderBottomWidth: 1,
+  },
+  error: {
+    fontSize: 18,
+    flex: 1,
+    borderColor: '#e74c3c',
+    borderBottomWidth: 1,
   },
   footer: {
     padding: 10,
