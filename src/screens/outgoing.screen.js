@@ -9,29 +9,31 @@ import {
   Picker,
   Platform,
   Switch,
+  Alert,
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {default as AntIcon} from 'react-native-vector-icons/AntDesign';
 import {getCategory, dateConverter} from '../cores/helpers/utils.helper';
 import {addOutgoingItem} from '../cores/services/query.service';
-import validator from '../cores/helpers/validator.helper';
+import {_getStoreData} from '../cores/services/storage.service';
+import {EMAIL} from '../constants';
 
 export default class OutgoingScreen extends Component {
   now = new Date();
+  email = '';
 
   constructor(props) {
     super(props);
     this.state = {
-      submited: false,
       duringDay: true,
       showFromDate: false,
       showToDate: false,
       categories: [],
       note: '',
-      noteValid: false,
+      noteValid: true,
       amount: 0,
-      amountValid: false,
+      amountValid: true,
       category: '',
       fromDate: new Date(),
       toDate: new Date(),
@@ -39,11 +41,16 @@ export default class OutgoingScreen extends Component {
 
     this.onNoteChange = this.onNoteChange.bind(this);
     this.onAmountChange = this.onAmountChange.bind(this);
+    this.onAmountKeyPress = this.onAmountKeyPress.bind(this);
     this.onDuringDaySwitch = this.onDuringDaySwitch.bind(this);
     this.onFromDatePress = this.onFromDatePress.bind(this);
     this.onToDatePress = this.onToDatePress.bind(this);
     this.onFromDateChange = this.onFromDateChange.bind(this);
     this.onToDateChange = this.onToDateChange.bind(this);
+
+    _getStoreData(EMAIL).then(email => {
+      this.email = email;
+    });
   }
 
   UNSAFE_componentWillMount() {
@@ -62,10 +69,19 @@ export default class OutgoingScreen extends Component {
   }
 
   onNoteChange(value) {
-    const valid =
-      validator({value, type: 'required'}) &&
-      validator({value, minLength: 5, type: 'minLength'}) &&
-      validator({value, maxLength: 5, type: 'maxLength'});
+    let valid = true;
+
+    if (value === '' || value === null || value === undefined) {
+      valid = false;
+    }
+
+    if (value.length < 5) {
+      valid = false;
+    }
+
+    if (value.length > 30) {
+      valid = false;
+    }
 
     this.setState({
       note: value,
@@ -74,10 +90,30 @@ export default class OutgoingScreen extends Component {
   }
 
   onAmountChange(value) {
+    let valid = true;
+
+    if (value === '' || value === null || value === undefined) {
+      valid = false;
+    }
+
+    if (isNaN(+value)) {
+      valid = false;
+    }
+
     const num = Number(value);
+    if (num > 10000000) {
+      valid = false;
+    }
+
     this.setState({
       amount: num ? num : 0,
+      amountValid: valid,
     });
+  }
+
+  onAmountKeyPress(e) {
+    //new Intl.NumberFormat('vi-VN', { maximumSignificantDigits: 3 }).format(35000)
+    console.log(e);
   }
 
   onCategoryChange(itemValue, itemIndex) {
@@ -117,8 +153,18 @@ export default class OutgoingScreen extends Component {
   }
 
   onSaveOutgoing() {
+    if (!this.state.noteValid) {
+      Alert('Ghi chú không hợp lệ.');
+      return;
+    }
+
+    if (!this.state.amountValid) {
+      Alert('Số tiền chi tiêu không hợp lệ.');
+      return;
+    }
+
     const data = {
-      email: 'hngochanh@outlook.com',
+      email: this.email,
       year: this.now.getFullYear(),
       month: this.now.getMonth() + 1,
       note: this.state.note,
@@ -161,12 +207,8 @@ export default class OutgoingScreen extends Component {
           <ScrollView>
             <View style={styles.item}>
               <TextInput
-                style={
-                  this.state.submited && this.state.noteValid
-                    ? styles.textInput
-                    : styles.error
-                }
-                placeholder="Ghi chú.."
+                style={this.state.noteValid ? styles.textInput : styles.error}
+                placeholder="Ghi chú..."
                 onChangeText={this.onNoteChange}
                 multiline={true}
               />
@@ -176,14 +218,11 @@ export default class OutgoingScreen extends Component {
                 <Icon name="terminal" size={25} color="#000000" />
               </View>
               <TextInput
-                style={
-                  this.submited && this.state.noteValid
-                    ? styles.textInput
-                    : styles.error
-                }
+                style={this.state.amountValid ? styles.textInput : styles.error}
                 placeholder="1.000.000"
                 keyboardType="numeric"
                 onChangeText={this.onAmountChange}
+                onKeyPress={this.onAmountKeyPress}
               />
             </View>
             <View style={styles.itemGroup}>

@@ -1,7 +1,6 @@
 export default function validator(data) {
   const {value, type} = data;
   let valid = true;
-  debugger;
   switch (type) {
     case 'required':
       if (value === '' || value === null || value === undefined) {

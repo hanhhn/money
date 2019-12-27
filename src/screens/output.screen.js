@@ -2,8 +2,12 @@ import React, {Component} from 'react';
 import {Text, View, ScrollView, StyleSheet} from 'react-native';
 import Group from '../components/group.component';
 import {queryOutgoingItems} from '../cores/services/query.service';
+import {_getStoreData} from '../cores/services/storage.service';
+import {EMAIL} from '../constants';
 
 export default class OutputScreen extends Component {
+  now = new Date();
+
   constructor(props) {
     super(props);
 
@@ -13,10 +17,18 @@ export default class OutputScreen extends Component {
   }
 
   UNSAFE_componentWillMount() {
-    queryOutgoingItems('hngochanh@outlook.com', '2019', '12').then(data => {
-      this.setState({
-        outgoings: data,
-      });
+    _getStoreData(EMAIL).then(email => {
+      if (email) {
+        const year = this.now.getFullYear();
+        const month = this.now.getMonth() + 1;
+        queryOutgoingItems(email, year.toString(), month.toString()).then(
+          data => {
+            this.setState({
+              outgoings: data,
+            });
+          },
+        );
+      }
     });
   }
 

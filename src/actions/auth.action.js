@@ -4,7 +4,7 @@ import firebase from '@react-native-firebase/app';
 import auth from '@react-native-firebase/auth';
 import {initializeFirebase} from '../cores/services/firebase.service';
 import {_setStoreData} from '../cores/services/storage.service';
-import {USER_DATE, ACCESS_TOKEN} from '../constants';
+import {USER_DATE, ACCESS_TOKEN, EMAIL} from '../constants';
 import * as action from '../actions/action';
 
 export const SignedInSuccess = (isLogged, accessToken, email) => {
@@ -42,6 +42,7 @@ export const SignIn = func => {
                 .signInWithCredential(credential)
                 .then(userCredential => {
                   _setStoreData(USER_DATE, userCredential.user);
+                  _setStoreData(EMAIL, userCredential.user.email);
 
                   dispatch(
                     SignedInSuccess(
