@@ -24,7 +24,9 @@ export default class Item extends Component {
           )}
         </View> */}
         <View style={styles.description}>
-          <Text style={styles.text}>{this.props.note}</Text>
+          <Text numberOfLines={1} style={styles.text}>
+            {this.props.note}
+          </Text>
         </View>
         <View style={styles.money}>{this.getAmount(this.props.amount)}</View>
       </View>

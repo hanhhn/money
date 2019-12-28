@@ -59,7 +59,9 @@ export default class GroupItem extends Component {
           <View style={styles.item}>{this.getItems()}</View>
         </View>
         <View style={styles.sum}>
-          <Text style={styles.text}>{this.getSum()}</Text>
+          <Text numberOfLines={1} style={styles.text}>
+            {this.getSum()}
+          </Text>
         </View>
       </View>
     );
@@ -103,5 +105,6 @@ const styles = StyleSheet.create({
   text: {
     color: '#85bb65',
     fontSize: 17,
+    maxWidth: 60,
   },
 });

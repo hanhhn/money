@@ -26,17 +26,25 @@ export default class OutgoingScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      duringDay: true,
-      showFromDate: false,
-      showToDate: false,
+      note: {
+        value: '',
+        valid: false,
+      },
+      amount: {
+        value: 0,
+        valid: false,
+      },
       categories: [],
-      note: '',
-      noteValid: true,
-      amount: 0,
-      amountValid: true,
       category: '',
-      fromDate: new Date(),
-      toDate: new Date(),
+      duringDay: true,
+      fromDate: {
+        value: new Date(),
+        show: false,
+      },
+      toDate: {
+        value: new Date(),
+        show: false,
+      },
     };
 
     this.onNoteChange = this.onNoteChange.bind(this);
@@ -64,7 +72,10 @@ export default class OutgoingScreen extends Component {
   onDuringDaySwitch() {
     this.setState({
       duringDay: !this.state.duringDay,
-      toDate: this.now,
+      toDate: {
+        value: this.now,
+        show: false,
+      },
     });
   }
 
@@ -84,8 +95,10 @@ export default class OutgoingScreen extends Component {
     }
 
     this.setState({
-      note: value,
-      noteValid: valid,
+      note: {
+        value,
+        valid,
+      },
     });
   }
 
@@ -101,13 +114,15 @@ export default class OutgoingScreen extends Component {
     }
 
     const num = Number(value);
-    if (num > 10000000) {
+    if (num > 100000000) {
       valid = false;
     }
 
     this.setState({
-      amount: num ? num : 0,
-      amountValid: valid,
+      amount: {
+        value: num ? num : 0,
+        valid: valid,
+      },
     });
   }
 
@@ -124,42 +139,52 @@ export default class OutgoingScreen extends Component {
 
   onFromDatePress() {
     this.setState({
-      showFromDate: true,
-    });
-  }
-
-  onFromDateChange(event, date) {
-    date = date || this.state.fromDate;
-
-    this.setState({
-      showFromDate: Platform.OS === 'ios' ? true : false,
-      fromDate: date,
+      fromDate: {
+        value: this.state.fromDate.value,
+        show: true,
+      },
     });
   }
 
   onToDatePress() {
     this.setState({
-      showToDate: true,
+      toDate: {
+        value: this.state.toDate.value,
+        show: true,
+      },
+    });
+  }
+
+  onFromDateChange(event, date) {
+    date = date || this.state.fromDate.value;
+
+    this.setState({
+      fromDate: {
+        value: date,
+        show: Platform.OS === 'ios' ? true : false,
+      },
     });
   }
 
   onToDateChange(event, date) {
-    date = date || this.state.toDate;
+    date = date || this.state.toDate.value;
 
     this.setState({
-      showToDate: Platform.OS === 'ios' ? true : false,
-      toDate: date,
+      toDate: {
+        value: date,
+        show: Platform.OS === 'ios' ? true : false,
+      },
     });
   }
 
   onSaveOutgoing() {
-    if (!this.state.noteValid) {
-      Alert('Ghi chú không hợp lệ.');
+    if (!this.state.note.valid) {
+      Alert.alert('Thêm chi tiêu', 'Ghi chú không hợp lệ.');
       return;
     }
 
-    if (!this.state.amountValid) {
-      Alert('Số tiền chi tiêu không hợp lệ.');
+    if (!this.state.amount.valid) {
+      Alert.alert('Thêm chi tiêu', 'Số tiền chi tiêu không hợp lệ.');
       return;
     }
 
@@ -167,16 +192,24 @@ export default class OutgoingScreen extends Component {
       email: this.email,
       year: this.now.getFullYear(),
       month: this.now.getMonth() + 1,
-      note: this.state.note,
-      amount: this.state.amount,
+      note: this.state.note.value,
+      amount: this.state.amount.value,
       category: this.state.category,
-      from: this.state.fromDate.getDate(),
+      from: this.state.fromDate.value.getDate(),
       to: this.state.duringDay
-        ? this.state.fromDate.getDate()
-        : this.state.toDate.getDate(),
+        ? this.state.fromDate.value.getDate()
+        : this.state.toDate.value.getDate(),
     };
 
-    addOutgoingItem(data);
+    addOutgoingItem(data)
+      .then(() => {
+        Alert.alert('Lưu thành công', 'Lưu chi tiêu thành công.');
+        const {onGoHomeScreen} = this.props;
+        onGoHomeScreen();
+      })
+      .catch(err => {
+        Alert.alert('Xảy ra lỗi', err);
+      });
   }
 
   render() {
@@ -189,7 +222,6 @@ export default class OutgoingScreen extends Component {
             <TouchableOpacity
               onPress={() => {
                 onGoHomeScreen();
-                console.log(this.state);
               }}>
               <AntIcon name="arrowleft" size={20} color="#bdc3c7" />
             </TouchableOpacity>
@@ -207,7 +239,7 @@ export default class OutgoingScreen extends Component {
           <ScrollView>
             <View style={styles.item}>
               <TextInput
-                style={this.state.noteValid ? styles.textInput : styles.error}
+                style={this.state.note.valid ? styles.textInput : styles.error}
                 placeholder="Ghi chú..."
                 onChangeText={this.onNoteChange}
                 multiline={true}
@@ -218,7 +250,9 @@ export default class OutgoingScreen extends Component {
                 <Icon name="terminal" size={25} color="#000000" />
               </View>
               <TextInput
-                style={this.state.amountValid ? styles.textInput : styles.error}
+                style={
+                  this.state.amount.valid ? styles.textInput : styles.error
+                }
                 placeholder="1.000.000"
                 keyboardType="numeric"
                 onChangeText={this.onAmountChange}
@@ -270,7 +304,7 @@ export default class OutgoingScreen extends Component {
                     style={{flex: 1}}>
                     <TextInput
                       style={{fontSize: 18}}
-                      value={dateConverter(this.state.fromDate)}
+                      value={dateConverter(this.state.fromDate.value)}
                       editable={false}
                     />
                   </TouchableOpacity>
@@ -291,7 +325,7 @@ export default class OutgoingScreen extends Component {
                     style={{flex: 1}}>
                     <TextInput
                       style={{fontSize: 18}}
-                      value={dateConverter(this.state.toDate)}
+                      value={dateConverter(this.state.toDate.value)}
                       editable={false}
                     />
                   </TouchableOpacity>
@@ -301,23 +335,23 @@ export default class OutgoingScreen extends Component {
           </ScrollView>
         </View>
         <View style={styles.footer}>
-          {this.state.showFromDate && (
+          {this.state.fromDate.show && (
             <DateTimePicker
-              value={this.state.fromDate}
+              value={this.state.fromDate.value}
               mode="date"
               is24Hour={true}
               display="default"
-              maximumDate={this.state.toDate}
+              maximumDate={this.state.toDate.value}
               onChange={this.onFromDateChange}
             />
           )}
-          {this.state.showToDate && (
+          {this.state.toDate.show && (
             <DateTimePicker
-              value={this.state.toDate}
+              value={this.state.toDate.value}
               mode="date"
               is24Hour={true}
               display="default"
-              minimumDate={this.state.fromDate}
+              minimumDate={this.state.fromDate.value}
               maximumDate={new Date()}
               onChange={this.onToDateChange}
             />

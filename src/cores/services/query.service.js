@@ -1,5 +1,4 @@
 import firestore from '@react-native-firebase/firestore';
-import {Alert} from 'react-native';
 
 export const addOutgoingItem = async request => {
   const collectionRef = firestore()
@@ -29,9 +28,6 @@ export const addOutgoingItem = async request => {
         note: request.note,
         category: request.category,
         amount: request.amount,
-      })
-      .then(() => {
-        console.log('OK');
       });
   });
 };

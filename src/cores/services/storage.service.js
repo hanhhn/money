@@ -10,7 +10,7 @@ export const _setStoreData = async (key, value) => {
 
 export const _getStoreData = async key => {
   try {
-    return await AsyncStorage.getItem(key);
+    return JSON.parse(await AsyncStorage.getItem(key));
   } catch (error) {
     console.log(error);
   }
