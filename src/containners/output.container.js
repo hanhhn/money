@@ -45,6 +45,8 @@ class OutputContainer extends Component {
     this.container = createAppContainer(outputNavigator);
   }
 
+  getMonths() {}
+
   render() {
     const ContentContainer = this.container;
 

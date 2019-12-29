@@ -1,3 +1,6 @@
+import Intl from 'intl';
+import 'intl/locale-data/jsonp/vi-VN';
+
 export function formatDate(date, format) {
   switch (format) {
     case 'dd/MM/yyyy':
@@ -95,6 +98,22 @@ export function toQueryString(obj) {
 
     return '&' + str.join('&');
   }
+}
+
+export function kConverter(value) {
+  if (value === '' || value === null || value === undefined) {
+    return '0đ';
+  }
+
+  if (isNaN(+value)) {
+    return '0đ';
+  }
+
+  return (
+    new Intl.NumberFormat('vi-VN', {maximumSignificantDigits: 3}).format(
+      value,
+    ) + 'đ'
+  );
 }
 
 export function getCategory() {

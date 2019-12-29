@@ -1,20 +1,9 @@
 import React, {Component} from 'react';
 import {Text, View, TouchableOpacity, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {kConverter} from '../cores/helpers/utils.helper';
 
 export default class Item extends Component {
-  getAmount(amount) {
-    if (Math.round(amount / 1000000) > 0) {
-      return <Text style={styles.text}>{Math.round(amount / 1000000)}Tr</Text>;
-    }
-
-    if (Math.round(amount / 1000) > 0) {
-      return <Text style={styles.text}>{Math.round(amount / 1000)}K</Text>;
-    }
-
-    return <Text style={styles.text}>{amount}Đ</Text>;
-  }
-
   render() {
     return (
       <View style={styles.container}>
@@ -28,7 +17,9 @@ export default class Item extends Component {
             {this.props.note}
           </Text>
         </View>
-        <View style={styles.money}>{this.getAmount(this.props.amount)}</View>
+        <View style={styles.money}>
+          <Text style={styles.text}>{kConverter(this.props.amount)}</Text>
+        </View>
       </View>
     );
   }

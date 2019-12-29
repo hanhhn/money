@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import {Text, View, StyleSheet} from 'react-native';
 import Item from './item.component';
 import Icon from 'react-native-vector-icons/AntDesign';
+import {kConverter} from '../cores/helpers/utils.helper';
+
 export default class GroupItem extends Component {
   getTimeline() {
     if (this.props.from && this.props.from === this.props.to) {
@@ -40,14 +42,7 @@ export default class GroupItem extends Component {
       this.props.items.forEach(value => {
         amount += value.amount;
       });
-
-      if (Math.round(amount / 1000000) > 1) {
-        return amount / 1000000 + 'Tr';
-      }
-
-      if (Math.round(amount / 1000) > 0) {
-        return amount / 1000 + 'K';
-      }
+      return amount;
     }
   }
 
@@ -60,7 +55,7 @@ export default class GroupItem extends Component {
         </View>
         <View style={styles.sum}>
           <Text numberOfLines={1} style={styles.text}>
-            {this.getSum()}
+            {kConverter(this.getSum())}
           </Text>
         </View>
       </View>
@@ -100,11 +95,11 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(0,0,0,0.2)',
     borderLeftWidth: 0.5,
     textAlign: 'center',
-    minWidth: 65,
   },
   text: {
     color: '#85bb65',
+    textAlign: 'center',
     fontSize: 17,
-    maxWidth: 60,
+    width: 95,
   },
 });

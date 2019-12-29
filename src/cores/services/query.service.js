@@ -8,7 +8,7 @@ export const addOutgoingItem = async request => {
     .doc(request.month.toString())
     .collection('items');
 
-  const query = await collectionRef
+  let query = await collectionRef
     .where('from', '==', request.from)
     .where('to', '==', request.to)
     .get();
@@ -18,6 +18,11 @@ export const addOutgoingItem = async request => {
       from: request.from,
       to: request.to,
     });
+
+    query = await collectionRef
+      .where('from', '==', request.from)
+      .where('to', '==', request.to)
+      .get();
   }
 
   query.forEach(documentSnap => {

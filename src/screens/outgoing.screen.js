@@ -422,7 +422,7 @@ const styles = StyleSheet.create({
   textInput: {
     fontSize: 18,
     flex: 1,
-    borderColor: '#bdc3c7',
+    borderColor: '#2ecc71',
     borderBottomWidth: 1,
   },
   error: {
