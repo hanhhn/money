@@ -79,3 +79,26 @@ export const queryOutgoingItems = async (email, year, month) => {
   );
   return result;
 };
+
+export const getFullMonth = async email => {
+  const querySnapShot = await firestore()
+    .collection('outgoings')
+    .where('email', '==', email)
+    .orderBy('year', 'desc')
+    .orderBy('month', 'desc')
+    .get();
+
+  const result = [];
+  querySnapShot.forEach(docSnapshot => {
+    const data = docSnapshot.data();
+    result.push(data.year + '/' + data.month);
+  });
+
+  const accumulator = [];
+  result.forEach(value => {
+    if (!accumulator.includes(value)) {
+      accumulator.push(value);
+    }
+  });
+  return accumulator;
+};
