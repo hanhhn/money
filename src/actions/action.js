@@ -8,3 +8,6 @@ export const GoTo = 'GO-TO';
 export const GoHome = 'GO-HOME';
 export const GoIncoming = 'GO-INCOMING';
 export const GoOutgoing = 'GO-OUTGOING';
+
+export const IncomingTab = 'INCOMING-TAB';
+export const OutgoingTab = 'OUTGOING-TAB';

@@ -5,12 +5,19 @@ import {connect} from 'react-redux';
 import OutputScreen from '../screens/output.screen';
 import Header from '../components/header.component';
 import {GoOutgoing} from '../actions/navigate.action';
+import {getOutgoingMonth} from '../actions/tab.action';
 
 class OutputContainer extends Component {
   container = {};
 
   constructor(props) {
     super(props);
+
+    if (this.props.auth.email) {
+      this.props.getOutgoingMonth(this.props.auth.email);
+    }
+
+    console.log(this.props.tabs);
 
     const outputNavigator = createMaterialTopTabNavigator(
       {
@@ -45,8 +52,6 @@ class OutputContainer extends Component {
     this.container = createAppContainer(outputNavigator);
   }
 
-  getMonths() {}
-
   render() {
     const ContentContainer = this.container;
 
@@ -68,11 +73,14 @@ export default connect(
   state => {
     return {
       navigate: state.navigateReducer,
+      auth: state.authReducer,
+      tabs: state.tabsReducer,
     };
   },
   dispatch => {
     return {
       onShowOutgoingScreen: () => dispatch(GoOutgoing()),
+      getOutgoingMonth: email => dispatch(getOutgoingMonth(email)),
     };
   },
 )(OutputContainer);
