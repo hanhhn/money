@@ -1,32 +1,19 @@
 import firestore from '@react-native-firebase/firestore';
 
 export const addOutgoingItem = async request => {
-  const collectionRef = firestore()
+  const query = firestore()
     .collection('outgoings')
-    .doc(request.email)
-    .collection(request.year.toString())
-    .doc(request.month.toString())
-    .collection('items');
-
-  let query = await collectionRef
+    .where('email', '==', request.email)
+    .where('year', '==', request.year)
+    .where('month', '==', request.month)
     .where('from', '==', request.from)
     .where('to', '==', request.to)
-    .get();
+    .limit(1);
 
-  if (query.empty) {
-    await collectionRef.doc().set({
-      from: request.from,
-      to: request.to,
-    });
+  const querySnapShot = await query.get();
 
-    query = await collectionRef
-      .where('from', '==', request.from)
-      .where('to', '==', request.to)
-      .get();
-  }
-
-  query.forEach(documentSnap => {
-    documentSnap.ref
+  if (!querySnapShot.empty) {
+    querySnapShot.docs[0].ref
       .collection('items')
       .doc()
       .set({
@@ -34,17 +21,40 @@ export const addOutgoingItem = async request => {
         category: request.category,
         amount: request.amount,
       });
-  });
+  } else {
+    firestore()
+      .collection('outgoings')
+      .doc()
+      .set({
+        email: request.email,
+        year: request.year,
+        month: request.month,
+        from: request.from,
+        to: request.to,
+      })
+      .then(async () => {
+        query.get().then(snapShot => {
+          snapShot.docs[0].ref
+            .collection('items')
+            .doc()
+            .set({
+              note: request.note,
+              category: request.category,
+              amount: request.amount,
+            });
+        });
+      });
+  }
 };
 
 export const queryOutgoingItems = async (email, year, month) => {
   const query = await firestore()
     .collection('outgoings')
-    .doc(email)
-    .collection(year)
-    .doc(month)
-    .collection('items')
+    .where('email', '==', email)
+    .where('year', '==', year)
+    .where('month', '==', month)
     .orderBy('from', 'asc')
+    .limit(31)
     .get();
 
   let result = [];
@@ -68,32 +78,4 @@ export const queryOutgoingItems = async (email, year, month) => {
     }),
   );
   return result;
-};
-
-export const queryIncomingItems = (email, year, month) => {
-  const collection = firestore()
-    .collection('incomings')
-    .doc(email)
-    .collection(year)
-    .doc(month)
-    .collection('items')
-    .get();
-
-  return collection.then(query => {
-    let result = [];
-    query.forEach(async docSnapshot => {
-      const obj = {
-        ...docSnapshot.data(),
-        items: [],
-      };
-
-      const subQuery = await docSnapshot.ref.collection('items').get();
-      subQuery.forEach(subDocSnapshot => {
-        obj.items.push(subDocSnapshot.data());
-      });
-
-      result.push(obj);
-    });
-    return result;
-  });
 };

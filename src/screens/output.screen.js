@@ -21,13 +21,11 @@ export default class OutputScreen extends Component {
       if (email) {
         const year = this.now.getFullYear();
         const month = this.now.getMonth() + 1;
-        queryOutgoingItems(email, year.toString(), month.toString()).then(
-          data => {
-            this.setState({
-              outgoings: data,
-            });
-          },
-        );
+        queryOutgoingItems(email, year, month).then(data => {
+          this.setState({
+            outgoings: data,
+          });
+        });
       }
     });
   }
