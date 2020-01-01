@@ -14,3 +14,6 @@ export const OutgoingTab = 'OUTGOING-TAB';
 
 export const UpdateOutgoingOfMonth = 'UPDATE-OUTGOING-MONTH';
 export const UpdateIncomingOfYear = 'UPDATE-INCOMING-YEAR';
+
+export const DetectChangeOutgoing = 'DETECT-CHANGE-OUTGOING';
+export const DetectChangeIncoming = 'DETECT-CHANGE-INCOMING';
