@@ -109,7 +109,21 @@ export function kConverter(value) {
     return '0k';
   }
 
-  return (value / 1000).toFixed(0).replace(/\d(?=(\d{3})+\.)/g, '$&,') + 'k';
+  return (
+    (value / 1000).toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$&,') + 'k'
+  );
+}
+
+export function currencyConverter(value) {
+  if (value === '' || value === null || value === undefined) {
+    return '0 đ';
+  }
+
+  if (isNaN(+value)) {
+    return '0 đ';
+  }
+
+  return value.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$&,') + ' đ';
 }
 
 export function getCategory() {

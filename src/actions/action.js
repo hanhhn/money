@@ -11,3 +11,6 @@ export const GoOutgoing = 'GO-OUTGOING';
 
 export const IncomingTab = 'INCOMING-TAB';
 export const OutgoingTab = 'OUTGOING-TAB';
+
+export const UpdateOutgoingOfMonth = 'UPDATE-OUTGOING-MONTH';
+export const UpdateIncomingOfYear = 'UPDATE-INCOMING-YEAR';

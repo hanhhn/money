@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Text, View, TouchableOpacity, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {currencyConverter} from '../cores/helpers/utils.helper';
 
 export default class Header extends Component {
   render() {
@@ -10,7 +11,7 @@ export default class Header extends Component {
           <Icon name="dollar" size={25} color="#85bb65" />
         </View>
         <View style={styles.money}>
-          <Text style={styles.vnd}>1.000.000 đ</Text>
+          <Text style={styles.vnd}>{currencyConverter(this.props.amount)}</Text>
         </View>
         <View style={styles.plus}>
           <TouchableOpacity onPress={() => this.props.onShowOutgoingScreen()}>

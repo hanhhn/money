@@ -3,8 +3,8 @@ import {createAppContainer} from 'react-navigation';
 import {createMaterialTopTabNavigator} from 'react-navigation-tabs';
 import {connect} from 'react-redux';
 import OutputScreen from '../screens/output.screen';
-import Header from '../components/header.component';
-import {GoOutgoing} from '../actions/navigate.action';
+import {updateOutgoingOfMonth} from '../actions/header.action';
+import HeaderContainer from './header.container.js';
 
 class OutputContainer extends Component {
   now = new Date();
@@ -27,13 +27,7 @@ class OutputContainer extends Component {
   }
 
   render() {
-    const headerProps = {
-      navigate: this.props.navigate,
-      onShowOutgoingScreen: this.props.onShowOutgoingScreen,
-    };
-
     let outputNavigator = {};
-
     if (this.props.tabs.outgoing && this.props.tabs.outgoing.length > 0) {
       const tabs = this.tabs(this.props.tabs.outgoing);
       const orderTabs = this.props.tabs.outgoing
@@ -100,11 +94,12 @@ class OutputContainer extends Component {
     const ContentContainer = createAppContainer(outputNavigator);
     const contentProps = {
       email: this.props.auth.email,
+      onUpdateOutgoingOfMonth: this.props.onUpdateOutgoingOfMonth,
     };
 
     return (
       <>
-        <Header {...headerProps} />
+        <HeaderContainer />
         <ContentContainer screenProps={contentProps} />
       </>
     );
@@ -121,7 +116,7 @@ export default connect(
   },
   dispatch => {
     return {
-      onShowOutgoingScreen: () => dispatch(GoOutgoing()),
+      onUpdateOutgoingOfMonth: outs => dispatch(updateOutgoingOfMonth(outs)),
     };
   },
 )(OutputContainer);

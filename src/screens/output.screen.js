@@ -12,33 +12,57 @@ export default class OutputScreen extends Component {
     this.state = {
       outgoings: [],
     };
+
+    this._isMounted = false;
   }
 
   UNSAFE_componentWillMount() {
     const email = this.props.screenProps.email;
     if (email && email !== '') {
+      this._isMounted = true;
       const year = +this.props.navigation.state.routeName.substr(0, 4);
       const month = +this.props.navigation.state.routeName.substr(4, 2);
-      this.getData(email, year, month).done();
+      this._isMounted && this.getData(email, year, month).done();
     }
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   async getData(email, year, month) {
     const data = await queryOutgoingItems(email, year, month);
-    this.setState({
-      outgoings: data,
-    });
+
+    this._isMounted &&
+      this.setState({
+        outgoings: data,
+      });
+
+    this._isMounted && this.props.screenProps.onUpdateOutgoingOfMonth(data);
   }
 
   render() {
+    const {outgoings} = this.state;
+
     return (
       <ScrollView style={styles.container}>
-        <View>
-          {this.state.outgoings &&
-            this.state.outgoings.map((value, index) => {
+        {outgoings && (
+          <View>
+            {outgoings.map((value, index) => {
               return <Group key={index} {...value} />;
             })}
-        </View>
+          </View>
+        )}
+        {!outgoings && (
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginTop: 100,
+            }}>
+            <Text>KHÔNG CÓ DỮ LIỆU</Text>
+          </View>
+        )}
       </ScrollView>
     );
   }
