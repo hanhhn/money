@@ -20,7 +20,7 @@ export default class InputScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <ScrollView style={{paddingLeft: 5, paddingRight: 5, paddingTop: 5}}>
+        <ScrollView style={{paddingLeft: 2, paddingRight: 2, paddingTop: 2}}>
           <View style={styles.content}>
             <View style={{marginBottom: 5}}>
               <Card />

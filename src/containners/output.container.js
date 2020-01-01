@@ -52,7 +52,7 @@ class OutputContainer extends Component {
             fontWeight: 'bold',
           },
           style: {
-            backgroundColor: '#ffaf40',
+            backgroundColor: '#0984e3',
           },
           tabStyle: {
             // height: 40,
@@ -84,7 +84,7 @@ class OutputContainer extends Component {
               fontWeight: 'bold',
             },
             style: {
-              backgroundColor: '#ffaf40',
+              backgroundColor: '#0984e3',
             },
             tabStyle: {
               // height: 40,
