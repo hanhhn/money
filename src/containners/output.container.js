@@ -5,32 +5,47 @@ import {connect} from 'react-redux';
 import OutputScreen from '../screens/output.screen';
 import Header from '../components/header.component';
 import {GoOutgoing} from '../actions/navigate.action';
-import {getOutgoingMonth} from '../actions/tab.action';
 
 class OutputContainer extends Component {
-  container = {};
+  now = new Date();
 
   constructor(props) {
     super(props);
+  }
 
-    if (this.props.auth.email) {
-      this.props.getOutgoingMonth(this.props.auth.email);
-    }
-
-    console.log(this.props.tabs);
-
-    const outputNavigator = createMaterialTopTabNavigator(
-      {
-        Tab1: {
-          screen: OutputScreen,
-          navigationOptions: {
-            title: 'Tháng Này',
-          },
+  tabs(tabs) {
+    return tabs.reverse().reduce((routes, tab) => {
+      routes[tab.id] = {
+        screen: OutputScreen,
+        navigationOptions: {
+          title: +tab.year === this.now.getFullYear() ? 'Tháng Này' : tab.title,
         },
-      },
-      {
-        initialRouteName: 'Tab1',
+      };
+
+      return routes;
+    }, {});
+  }
+
+  render() {
+    const headerProps = {
+      navigate: this.props.navigate,
+      onShowOutgoingScreen: this.props.onShowOutgoingScreen,
+    };
+
+    let outputNavigator = {};
+
+    if (this.props.tabs.outgoing && this.props.tabs.outgoing.length > 0) {
+      const tabs = this.tabs(this.props.tabs.outgoing);
+      const orderTabs = this.props.tabs.outgoing
+        .map(tab => {
+          return tab.id;
+        })
+        .sort()
+        .reverse();
+
+      outputNavigator = createMaterialTopTabNavigator(tabs, {
         lazy: true,
+        order: orderTabs,
         tabBarOptions: {
           labelStyle: {
             color: '#ffffff',
@@ -46,24 +61,51 @@ class OutputContainer extends Component {
           },
           scrollEnabled: true,
         },
-      },
-    );
+        defaultNavigationOptions: ({navigation}) => ({
+          tabBarOnPress: ({navigation, defaultHandler}) => {
+            defaultHandler();
+          },
+        }),
+      });
+    } else {
+      outputNavigator = createMaterialTopTabNavigator(
+        {
+          Tab1: {
+            screen: OutputScreen,
+            navigationOptions: {
+              title: 'Tháng Này',
+            },
+          },
+        },
+        {
+          tabBarOptions: {
+            labelStyle: {
+              color: '#ffffff',
+              fontWeight: 'bold',
+            },
+            style: {
+              backgroundColor: '#ffaf40',
+            },
+            tabStyle: {
+              // height: 40,
+              alignContent: 'center',
+              alignItems: 'center',
+            },
+            scrollEnabled: true,
+          },
+        },
+      );
+    }
 
-    this.container = createAppContainer(outputNavigator);
-  }
-
-  render() {
-    const ContentContainer = this.container;
-
-    const headerProps = {
-      navigate: this.props.navigate,
-      onShowOutgoingScreen: this.props.onShowOutgoingScreen,
+    const ContentContainer = createAppContainer(outputNavigator);
+    const contentProps = {
+      email: this.props.auth.email,
     };
 
     return (
       <>
         <Header {...headerProps} />
-        <ContentContainer />
+        <ContentContainer screenProps={contentProps} />
       </>
     );
   }
@@ -73,14 +115,13 @@ export default connect(
   state => {
     return {
       navigate: state.navigateReducer,
-      auth: state.authReducer,
       tabs: state.tabsReducer,
+      auth: state.authReducer,
     };
   },
   dispatch => {
     return {
       onShowOutgoingScreen: () => dispatch(GoOutgoing()),
-      getOutgoingMonth: email => dispatch(getOutgoingMonth(email)),
     };
   },
 )(OutputContainer);

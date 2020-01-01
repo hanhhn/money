@@ -13,7 +13,7 @@ export const getOutgoingMonth = email => {
         const result = [];
         querySnapShot.forEach(docSnapshot => {
           const data = docSnapshot.data();
-          result.push(data.year + '/' + data.month);
+          result.push(data.year + '/' + data.month.toString().padStart(2, 0));
         });
 
         const accumulator = [];
@@ -23,9 +23,19 @@ export const getOutgoingMonth = email => {
           }
         });
 
+        const tabs = accumulator.map(v => {
+          const o = v.split('/');
+          return {
+            id: v.replace('/', ''),
+            year: o[0],
+            month: o[1],
+            title: v,
+          };
+        });
+
         dispatch({
           type: act.OutgoingTab,
-          outgoing: accumulator,
+          outgoing: tabs,
         });
       });
   };
@@ -43,7 +53,7 @@ export const getIncomingMonth = email => {
         const result = [];
         querySnapShot.forEach(docSnapshot => {
           const data = docSnapshot.data();
-          result.push(data.year + '/' + data.month);
+          result.push(data.year + '/' + data.month.toString().padStart(2, 0));
         });
 
         const accumulator = [];

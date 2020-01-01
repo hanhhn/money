@@ -2,8 +2,6 @@ import React, {Component} from 'react';
 import {Text, View, ScrollView, StyleSheet} from 'react-native';
 import Group from '../components/group.component';
 import {queryOutgoingItems} from '../cores/services/query.service';
-import {_getStoreData} from '../cores/services/storage.service';
-import {EMAIL} from '../constants';
 
 export default class OutputScreen extends Component {
   now = new Date();
@@ -17,16 +15,18 @@ export default class OutputScreen extends Component {
   }
 
   UNSAFE_componentWillMount() {
-    _getStoreData(EMAIL).then(email => {
-      if (email) {
-        const year = this.now.getFullYear();
-        const month = this.now.getMonth() + 1;
-        queryOutgoingItems(email, year, month).then(data => {
-          this.setState({
-            outgoings: data,
-          });
-        });
-      }
+    const email = this.props.screenProps.email;
+    if (email && email !== '') {
+      const year = +this.props.navigation.state.routeName.substr(0, 4);
+      const month = +this.props.navigation.state.routeName.substr(4, 2);
+      this.getData(email, year, month).done();
+    }
+  }
+
+  async getData(email, year, month) {
+    const data = await queryOutgoingItems(email, year, month);
+    this.setState({
+      outgoings: data,
     });
   }
 

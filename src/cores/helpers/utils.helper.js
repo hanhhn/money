@@ -102,18 +102,14 @@ export function toQueryString(obj) {
 
 export function kConverter(value) {
   if (value === '' || value === null || value === undefined) {
-    return '0đ';
+    return '0k';
   }
 
   if (isNaN(+value)) {
-    return '0đ';
+    return '0k';
   }
 
-  return (
-    new Intl.NumberFormat('vi-VN', {maximumSignificantDigits: 3}).format(
-      value,
-    ) + 'đ'
-  );
+  return (value / 1000).toFixed(0).replace(/\d(?=(\d{3})+\.)/g, '$&,') + 'k';
 }
 
 export function getCategory() {

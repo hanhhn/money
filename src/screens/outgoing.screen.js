@@ -190,8 +190,8 @@ export default class OutgoingScreen extends Component {
 
     const data = {
       email: this.email,
-      year: this.now.getFullYear(),
-      month: this.now.getMonth() + 1,
+      year: this.state.fromDate.value.getFullYear(),
+      month: this.state.fromDate.value.getMonth() + 1,
       note: this.state.note.value,
       amount: this.state.amount.value,
       category: this.state.category,
