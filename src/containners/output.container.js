@@ -109,7 +109,6 @@ class OutputContainer extends Component {
 export default connect(
   state => {
     return {
-      navigate: state.navigateReducer,
       tabs: state.tabsReducer,
       auth: state.authReducer,
     };

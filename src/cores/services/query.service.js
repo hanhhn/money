@@ -1,104 +1,62 @@
 import firestore from '@react-native-firebase/firestore';
+import {groupBy} from '../helpers/utils.helper.js';
 
 export const addOutgoingItem = async request => {
-  const query = firestore()
+  const fullMonth = request.year + request.month.toString().padStart(2, 0);
+  firestore()
     .collection('outgoings')
-    .where('email', '==', request.email)
-    .where('year', '==', request.year)
-    .where('month', '==', request.month)
-    .where('from', '==', request.from)
-    .where('to', '==', request.to)
-    .limit(1);
+    .doc(request.email)
+    .collection(fullMonth)
+    .doc()
+    .set({
+      year: request.year,
+      month: request.month,
+      from: request.from,
+      to: request.to,
+      note: request.note,
+      category: request.category,
+      amount: request.amount,
+    });
 
-  const querySnapShot = await query.get();
+  const emailRef = firestore()
+    .collection('outgoings')
+    .doc(request.email);
 
-  if (!querySnapShot.empty) {
-    querySnapShot.docs[0].ref
-      .collection('items')
-      .doc()
-      .set({
-        note: request.note,
-        category: request.category,
-        amount: request.amount,
-      });
-  } else {
-    firestore()
-      .collection('outgoings')
-      .doc()
-      .set({
-        email: request.email,
-        year: request.year,
-        month: request.month,
-        from: request.from,
-        to: request.to,
-      })
-      .then(async () => {
-        query.get().then(snapShot => {
-          snapShot.docs[0].ref
-            .collection('items')
-            .doc()
-            .set({
-              note: request.note,
-              category: request.category,
-              amount: request.amount,
-            });
-        });
-      });
-  }
+  emailRef.get().then(docSnapShot => {
+    let data = docSnapShot.data();
+    if (data.months && data.months.length > 0) {
+      const f = request.year + '/' + request.month;
+      if (!data.months.includes(f)) {
+        data.months.push(f);
+        emailRef.update(data);
+      }
+    } else {
+      data = {
+        months: [request.year + '/' + request.month],
+      };
+      emailRef.add(data);
+    }
+  });
 };
 
 export const queryOutgoingItems = async (email, year, month) => {
-  const query = await firestore()
+  const fullMonth = year + month.toString().padStart(2, 0);
+  const querySnapShot = await firestore()
     .collection('outgoings')
-    .where('email', '==', email)
-    .where('year', '==', year)
-    .where('month', '==', month)
+    .doc(email)
+    .collection(fullMonth)
     .orderBy('from', 'asc')
-    .limit(31)
     .get();
 
   let result = [];
-  await Promise.all(
-    query.docs.map(async docSnapshot => {
-      const obj = {
-        ref: docSnapshot.ref.path,
-        ...docSnapshot.data(),
-        items: [],
-      };
-
-      const subQuery = await docSnapshot.ref.collection('items').get();
-      subQuery.forEach(subDocSnapshot => {
-        obj.items.push({
-          ref: subDocSnapshot.ref.path,
-          ...subDocSnapshot.data(),
-        });
-      });
-
-      result.push(obj);
-    }),
-  );
-  return result;
-};
-
-export const getFullMonth = async email => {
-  const querySnapShot = await firestore()
-    .collection('outgoings')
-    .where('email', '==', email)
-    .orderBy('year', 'desc')
-    .orderBy('month', 'desc')
-    .get();
-
-  const result = [];
   querySnapShot.forEach(docSnapshot => {
-    const data = docSnapshot.data();
-    result.push(data.year + '/' + data.month);
+    result.push({
+      ref: docSnapshot.ref.path,
+      ...docSnapshot.data(),
+    });
   });
 
-  const accumulator = [];
-  result.forEach(value => {
-    if (!accumulator.includes(value)) {
-      accumulator.push(value);
-    }
+  return groupBy(result, item => {
+    return [item.from, item.to];
   });
-  return accumulator;
 };
