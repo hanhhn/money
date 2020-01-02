@@ -38,7 +38,7 @@ export default class OutputScreen extends Component {
         outgoings: data,
       });
 
-    this._isMounted && this.props.screenProps.onUpdateOutgoingOfMonth(data);
+    this._isMounted && this.props.screenProps.onGetOutgoingOfMonth(data);
   }
 
   render() {

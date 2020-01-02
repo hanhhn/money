@@ -3,7 +3,7 @@ import {createAppContainer} from 'react-navigation';
 import {createMaterialTopTabNavigator} from 'react-navigation-tabs';
 import {connect} from 'react-redux';
 import OutputScreen from '../screens/output.screen';
-import {updateOutgoingOfMonth} from '../actions/header.action';
+import {OutgoingOfMonth} from '../actions/header.action';
 import HeaderContainer from './header.container.js';
 
 class OutputContainer extends Component {
@@ -94,7 +94,7 @@ class OutputContainer extends Component {
     const ContentContainer = createAppContainer(outputNavigator);
     const contentProps = {
       email: this.props.auth.email,
-      onUpdateOutgoingOfMonth: this.props.onUpdateOutgoingOfMonth,
+      onGetOutgoingOfMonth: this.props.onGetOutgoingOfMonth,
     };
 
     return (
@@ -116,7 +116,7 @@ export default connect(
   },
   dispatch => {
     return {
-      onUpdateOutgoingOfMonth: outs => dispatch(updateOutgoingOfMonth(outs)),
+      onGetOutgoingOfMonth: outs => dispatch(OutgoingOfMonth(outs)),
     };
   },
 )(OutputContainer);

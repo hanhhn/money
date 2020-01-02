@@ -1,12 +1,14 @@
 import * as act from '../actions/action';
 
-export const updateOutgoingOfMonth = outs => {
+export const OutgoingOfMonth = outs => {
   let sum = 0;
   if (outs && outs.length > 0) {
     outs.forEach(day => {
-      sum += day.items.reduce((x, y) => {
-        return x.amount + y.amount;
-      });
+      if (day.items && day.items.length > 0) {
+        sum += day.items.reduce((x, y) => {
+          return x + (y.amount || 0);
+        }, 0);
+      }
     });
   }
 
@@ -18,7 +20,7 @@ export const updateOutgoingOfMonth = outs => {
   };
 };
 
-export const updateIncomingOfYear = ins => {
+export const IncomingOfYear = ins => {
   let sum = 0;
   if (ins && ins.length > 0) {
     ins.forEach(day => {
