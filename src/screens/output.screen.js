@@ -20,7 +20,7 @@ export default class OutputScreen extends Component {
         {hasData && (
           <View>
             {outgoings.map((value, index) => {
-              return <Group key={index} {...value} />;
+              return <Group key={index} dataSource={value} />;
             })}
           </View>
         )}

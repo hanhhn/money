@@ -6,24 +6,25 @@ import {kConverter} from '../cores/helpers/utils.helper';
 
 export default class GroupItem extends Component {
   getTimeline() {
-    if (this.props.from && this.props.from === this.props.to) {
-      return <Text>{this.props.from}</Text>;
+    const item = this.props.dataSource[0];
+    if (item.from && item.from === item.to) {
+      return <Text>{item.from}</Text>;
     }
 
-    if (this.props.from && this.props.to) {
+    if (item.from && item.to) {
       return (
         <>
-          <Text>{this.props.from}</Text>
+          <Text>{item.from}</Text>
           <Icon name="arrowdown" size={14} color="green" />
-          <Text>{this.props.to}</Text>
+          <Text>{item.to}</Text>
         </>
       );
     }
   }
 
   getItems() {
-    if (this.props.items) {
-      return this.props.items.map((value, index) => {
+    if (this.props.dataSource) {
+      return this.props.dataSource.map((value, index) => {
         return (
           <Item
             key={index}
@@ -37,9 +38,9 @@ export default class GroupItem extends Component {
   }
 
   getSum() {
-    if (this.props.items) {
+    if (this.props.dataSource) {
       let amount = 0;
-      this.props.items.forEach(value => {
+      this.props.dataSource.forEach(value => {
         amount += value.amount;
       });
       return amount;
