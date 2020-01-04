@@ -12,8 +12,8 @@ export const GoOutgoing = 'GO-OUTGOING';
 export const IncomingTab = 'INCOMING-TAB';
 export const OutgoingTab = 'OUTGOING-TAB';
 
-export const SumMonthInput = 'SUM-MONTH-INPUT';
-export const SumYearOutput = 'SUM-YEAR-OUTPUT';
+export const SumMonthOutput = 'SUM-MONTH-OUTPUT';
+export const SumYearInput = 'SUM-YEAR-INPUT';
 
 export const DetectChangeOutgoing = 'DETECT-CHANGE-OUTGOING';
 export const DetectChangeIncoming = 'DETECT-CHANGE-INCOMING';

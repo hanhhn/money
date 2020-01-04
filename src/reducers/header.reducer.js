@@ -8,13 +8,13 @@ const headerReducer = (
   action,
 ) => {
   switch (action.type) {
-    case act.SumMonthInput:
+    case act.SumYearInput:
       return {
         ...state,
         input: action.value,
       };
 
-    case act.SumYearOutput:
+    case act.SumMonthOutput:
       return {
         ...state,
         output: action.value,

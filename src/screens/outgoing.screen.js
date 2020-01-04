@@ -13,9 +13,9 @@ import {
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import firestore from '@react-native-firebase/firestore';
 import {default as AntIcon} from 'react-native-vector-icons/AntDesign';
 import {getCategory, dateConverter} from '../cores/helpers/utils.helper';
-import {addOutgoingItem} from '../cores/services/query.service';
 import {_getStoreData} from '../cores/services/storage.service';
 import {EMAIL} from '../constants';
 
@@ -188,7 +188,7 @@ export default class OutgoingScreen extends Component {
       return;
     }
 
-    const data = {
+    const request = {
       email: this.email,
       year: this.state.fromDate.value.getFullYear(),
       month: this.state.fromDate.value.getMonth() + 1,
@@ -201,27 +201,63 @@ export default class OutgoingScreen extends Component {
         : this.state.toDate.value.getDate(),
     };
 
-    addOutgoingItem(data)
+    firestore()
+      .collection('outgoings')
+      .doc(request.email)
+      .collection('items')
+      .doc()
+      .set({
+        year: request.year,
+        month: request.month,
+        from: request.from,
+        to: request.to,
+        note: request.note,
+        category: request.category,
+        amount: request.amount,
+        createdDate: new Date(),
+      })
       .then(() => {
         Alert.alert('Lưu thành công', 'Lưu chi tiêu thành công.');
-        const {onGoHomeScreen} = this.props;
-        onGoHomeScreen();
+        this.goBack();
+
+        const emailRef = firestore()
+          .collection('outgoings')
+          .doc(request.email);
+
+        emailRef.get().then(docSnapShot => {
+          let data = docSnapShot.data();
+          const f = request.year + request.month.toString().padStart(2, '0');
+
+          if (data && data.months && data.months.length > 0) {
+            if (!data.months.includes(f)) {
+              data.months.push(f);
+              emailRef.update(data);
+            }
+          } else {
+            data = {
+              months: [f],
+            };
+            emailRef.set(data);
+          }
+        });
       })
       .catch(err => {
         Alert.alert('Xảy ra lỗi', err);
       });
   }
 
-  render() {
-    const {goBack} = this.props;
+  goBack() {
+    this.props.goBack();
+  }
 
+  render() {
     return (
       <View style={styles.container}>
         <View style={styles.header}>
           <View>
             <TouchableOpacity
               onPress={() => {
-                goBack();
+                this.goBack();
               }}>
               <AntIcon name="arrowleft" size={20} color="#bdc3c7" />
             </TouchableOpacity>

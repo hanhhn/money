@@ -12,7 +12,6 @@ class HeaderContainer extends Component {
       amount: this.props.header.output,
       ...this.props,
     };
-
     return <Header {...headerProps} />;
   }
 }

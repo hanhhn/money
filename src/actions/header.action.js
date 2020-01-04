@@ -1,6 +1,6 @@
 import * as act from '../actions/action';
 
-export const OutgoingOfMonth = outs => {
+export const getSumMonthOutput = outs => {
   let sum = 0;
   if (outs && outs.length > 0) {
     outs.forEach(day => {
@@ -14,13 +14,13 @@ export const OutgoingOfMonth = outs => {
 
   return dispatch => {
     dispatch({
-      type: act.SumMonthInput,
-      sum,
+      type: act.SumMonthOutput,
+      value: sum,
     });
   };
 };
 
-export const IncomingOfYear = ins => {
+export const getSumYearInput = ins => {
   let sum = 0;
   if (ins && ins.length > 0) {
     ins.forEach(day => {
@@ -33,8 +33,8 @@ export const IncomingOfYear = ins => {
   }
   return dispatch => {
     dispatch({
-      type: act.SumYearOutput,
-      sum,
+      type: act.SumYearInput,
+      value: sum,
     });
   };
 };

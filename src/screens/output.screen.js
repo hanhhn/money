@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import {Text, View, ScrollView, StyleSheet} from 'react-native';
+import firestore from '@react-native-firebase/firestore';
+import {groupBy} from '../cores/helpers/utils.helper.js';
 import Group from '../components/group.component';
 
 export default class OutputScreen extends Component {
@@ -9,6 +11,49 @@ export default class OutputScreen extends Component {
     this.state = {
       outgoings: [],
     };
+  }
+
+  componentDidMount() {
+    this.loadData();
+  }
+
+  async loadData() {
+    const email = this.props.screenProps.email;
+    const year = +this.props.navigation.state.routeName.substr(0, 4);
+    const month = +this.props.navigation.state.routeName.substr(4, 2);
+    if (email && email !== '' && year && month) {
+      firestore()
+        .collection('outgoings')
+        .doc(email)
+        .collection('items')
+        .where('year', '==', year)
+        .where('month', '==', month)
+        .orderBy('from', 'desc')
+        .orderBy('to', 'asc')
+        .orderBy('createdDate', 'asc')
+        .get()
+        .then(querySnapShot => {
+          let result = [];
+          querySnapShot.forEach(docSnapshot => {
+            result.push({
+              ref: docSnapshot.ref.path,
+              ...docSnapshot.data(),
+            });
+          });
+
+          const data = groupBy(result, item => {
+            return [item.from, item.to];
+          });
+
+          // update header
+          const {getSumMonthOutput} = this.props.screenProps;
+          getSumMonthOutput(data);
+
+          this.setState({
+            outgoings: data,
+          });
+        });
+    }
   }
 
   render() {
