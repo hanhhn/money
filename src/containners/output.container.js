@@ -29,7 +29,7 @@ class OutputContainer extends Component {
     }, {});
   }
 
-  render() {
+  getOutputNavigator() {
     let {tabs} = this.props;
 
     let orderTabs = ['tabNew'];
@@ -76,7 +76,11 @@ class OutputContainer extends Component {
       }),
     });
 
-    const OutputNavigator = createAppContainer(outputNavigator);
+    return createAppContainer(outputNavigator);
+  }
+
+  render() {
+    const OutputNavigator = this.getOutputNavigator();
 
     return (
       <>
