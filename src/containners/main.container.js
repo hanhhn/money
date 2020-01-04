@@ -1,50 +1,88 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import MainScreen from '../screens/main.screen';
-import {GoHome} from '../actions/navigate.action';
-import {getOutgoingMonth} from '../actions/tab.action';
+import {createAppContainer} from 'react-navigation';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import {createBottomTabNavigator} from 'react-navigation-tabs';
+import AccountContainer from '../containners/account.container';
+import InputContainer from '../containners/input.container';
+import OutputContainer from '../containners/output.container';
+import ReportScreen from '../screens/report.screen';
 
 class MainContainer extends Component {
   constructor(props) {
     super(props);
   }
 
-  UNSAFE_componentWillMount() {
-    if (this.props.auth.email) {
-      this.props.getOutgoingMonth(this.props.auth.email);
-    }
+  goBack(navigation) {
+    navigation.goBack();
   }
 
-  UNSAFE_componentWillUpdate(nextProps) {
-    if (this.props.navigate.router !== nextProps.navigate.router) {
-      this.props.navigation.navigate(nextProps.navigate.router);
-    }
+  goOutgoingScreen(navigation) {
+    navigation.navigate('OutgoingScreen');
+  }
 
-    if (
-      (this.props.auth.email !== '' || nextProps.auth.email !== '') &&
-      this.props.auth.email !== nextProps.auth.email
-    ) {
-      const email = this.props.auth.email ?? nextProps.auth.email;
-      this.props.getOutgoingMonth(email);
-    }
+  goIncomingScreen(navigation) {
+    navigation.navigate('IncomingScreen');
   }
 
   render() {
-    return <MainScreen />;
+    const mainNavigator = createBottomTabNavigator(
+      {
+        InputScreen: {
+          screen: InputContainer,
+          navigationOptions: {
+            tabBarLabel: 'Thu',
+            tabBarIcon: ({tintColor}) => (
+              <Icon name="smile-o" color={tintColor} size={27} />
+            ),
+          },
+        },
+        OutputScreen: {
+          screen: OutputContainer,
+          navigationOptions: {
+            tabBarLabel: 'Chi',
+            tabBarIcon: ({tintColor}) => (
+              <Icon name="frown-o" color={tintColor} size={27} />
+            ),
+          },
+        },
+        ReportScreen: {
+          screen: ReportScreen,
+          navigationOptions: {
+            tabBarLabel: 'Báo cáo',
+            tabBarIcon: ({tintColor}) => (
+              <Icon name="pie-chart" color={tintColor} size={27} />
+            ),
+          },
+        },
+        AccountScreen: {
+          screen: AccountContainer,
+          navigationOptions: {
+            tabBarLabel: 'Tài khoản',
+            tabBarIcon: ({tintColor}) => (
+              <Icon name="user" color={tintColor} size={27} />
+            ),
+          },
+        },
+      },
+      {
+        initialRouteName: 'OutputScreen',
+        lazy: false,
+        tabBarOptions: {
+          activeTintColor: '#ffaf40',
+        },
+      },
+    );
+
+    const MainNavigator = createAppContainer(mainNavigator);
+
+    const props = {
+      goOutgoingScreen: () => this.goOutgoingScreen(this.props.navigation),
+      goIncomingScreen: () => this.goIncomingScreen(this.props.navigation),
+    };
+
+    return <MainNavigator screenProps={props} />;
   }
 }
 
-export default connect(
-  state => {
-    return {
-      navigate: state.navigateReducer,
-      auth: state.authReducer,
-    };
-  },
-  dispatch => {
-    return {
-      onGoHomeScreen: () => dispatch(GoHome()),
-      getOutgoingMonth: email => dispatch(getOutgoingMonth(email)),
-    };
-  },
-)(MainContainer);
+export default connect()(MainContainer);

@@ -44,18 +44,16 @@ export default class IncomingScreen extends Component {
     this.show('time');
   };
 
-  componentDidUpdate() {}
-
   render() {
     const {show, date, mode} = this.state;
-    const {onGoHomeScreen} = this.props;
+    const {goBack} = this.props;
 
     return (
       <View>
         <View style={styles.container}>
           <View style={styles.header}>
             <View>
-              <TouchableOpacity onPress={() => onGoHomeScreen()}>
+              <TouchableOpacity onPress={() => goBack()}>
                 <AntIcon name="arrowleft" size={20} color="#bdc3c7" />
               </TouchableOpacity>
             </View>

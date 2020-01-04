@@ -7,7 +7,11 @@ import SignInSceen from '../screens/sign-in.screen.js';
 import * as storageService from '../cores/services/storage.service';
 
 class AppContainer extends Component {
-  UNSAFE_componentWillMount() {
+  constructor(props) {
+    super(props);
+  }
+
+  componentDidMount() {
     const {onUserSignedIn} = this.props;
 
     storageService._getStoreData(ACCESS_TOKEN).then(token => {

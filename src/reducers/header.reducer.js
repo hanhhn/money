@@ -2,22 +2,22 @@ import * as act from '../actions/action';
 
 const headerReducer = (
   state = {
-    outgoing: 0,
-    incoming: 0,
+    input: 0,
+    output: 0,
   },
   action,
 ) => {
   switch (action.type) {
-    case act.UpdateOutgoingOfMonth:
+    case act.SumMonthInput:
       return {
         ...state,
-        outgoing: action.sum,
+        input: action.value,
       };
 
-    case act.UpdateIncomingOfYear:
+    case act.SumYearOutput:
       return {
         ...state,
-        incoming: action.sum,
+        output: action.value,
       };
 
     default:

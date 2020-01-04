@@ -14,7 +14,7 @@ export default class Header extends Component {
           <Text style={styles.vnd}>{currencyConverter(this.props.amount)}</Text>
         </View>
         <View style={styles.plus}>
-          <TouchableOpacity onPress={() => this.props.onShowOutgoingScreen()}>
+          <TouchableOpacity onPress={() => this.props.goOutgoingScreen()}>
             <Icon name="plus-circle" size={40} color="#ecf0f1" />
           </TouchableOpacity>
         </View>

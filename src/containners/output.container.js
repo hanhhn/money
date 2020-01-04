@@ -3,7 +3,6 @@ import {createAppContainer} from 'react-navigation';
 import {createMaterialTopTabNavigator} from 'react-navigation-tabs';
 import {connect} from 'react-redux';
 import OutputScreen from '../screens/output.screen';
-import {OutgoingOfMonth} from '../actions/header.action';
 import HeaderContainer from './header.container.js';
 
 class OutputContainer extends Component {
@@ -14,11 +13,15 @@ class OutputContainer extends Component {
   }
 
   tabs(tabs) {
-    return tabs.reverse().reduce((routes, tab) => {
+    return tabs.reduce((routes, tab) => {
+      const thisMonth =
+        +tab.year === this.now.getFullYear() &&
+        +tab.month === this.now.getMonth() + 1;
+
       routes[tab.id] = {
         screen: OutputScreen,
         navigationOptions: {
-          title: +tab.year === this.now.getFullYear() ? 'Tháng Này' : tab.title,
+          title: thisMonth ? 'Tháng Này' : tab.title,
         },
       };
 
@@ -27,96 +30,64 @@ class OutputContainer extends Component {
   }
 
   render() {
-    let outputNavigator = {};
-    if (this.props.tabs.outgoing && this.props.tabs.outgoing.length > 0) {
-      const tabs = this.tabs(this.props.tabs.outgoing);
-      const orderTabs = this.props.tabs.outgoing
-        .map(tab => {
-          return tab.id;
-        })
-        .sort()
-        .reverse();
+    let {tabs} = this.props;
 
-      outputNavigator = createMaterialTopTabNavigator(tabs, {
-        lazy: true,
-        order: orderTabs,
-        tabBarOptions: {
-          labelStyle: {
-            color: '#ffffff',
-            fontWeight: 'bold',
-          },
-          style: {
-            backgroundColor: '#0984e3',
-          },
-          tabStyle: {
-            // height: 40,
-            alignContent: 'center',
-            alignItems: 'center',
-          },
-          scrollEnabled: true,
-        },
-        defaultNavigationOptions: ({navigation}) => ({
-          tabBarOnPress: ({navigation, defaultHandler}) => {
-            defaultHandler();
-          },
-        }),
+    let orderTabs = ['tabNew'];
+    let renderTabs = [];
+
+    if (tabs && tabs.length > 0) {
+      renderTabs = this.tabs(tabs);
+      orderTabs = tabs.map(tab => {
+        return tab.id;
       });
     } else {
-      outputNavigator = createMaterialTopTabNavigator(
-        {
-          Tab1: {
-            screen: OutputScreen,
-            navigationOptions: {
-              title: 'Tháng Này',
-            },
+      renderTabs = {
+        tabNew: {
+          screen: OutputScreen,
+          navigationOptions: {
+            title: 'Tháng Này',
           },
         },
-        {
-          tabBarOptions: {
-            labelStyle: {
-              color: '#ffffff',
-              fontWeight: 'bold',
-            },
-            style: {
-              backgroundColor: '#0984e3',
-            },
-            tabStyle: {
-              // height: 40,
-              alignContent: 'center',
-              alignItems: 'center',
-            },
-            scrollEnabled: true,
-          },
-        },
-      );
+      };
     }
 
-    const ContentContainer = createAppContainer(outputNavigator);
-    const contentProps = {
-      email: this.props.auth.email,
-      onGetOutgoingOfMonth: this.props.onGetOutgoingOfMonth,
-    };
+    const outputNavigator = createMaterialTopTabNavigator(renderTabs, {
+      lazy: true,
+      order: orderTabs,
+      tabBarOptions: {
+        labelStyle: {
+          color: '#ffffff',
+          fontWeight: 'bold',
+        },
+        style: {
+          backgroundColor: '#0984e3',
+        },
+        tabStyle: {
+          // height: 40,
+          alignContent: 'center',
+          alignItems: 'center',
+        },
+        scrollEnabled: true,
+      },
+      defaultNavigationOptions: ({navigation}) => ({
+        tabBarOnPress: ({navigation, defaultHandler}) => {
+          defaultHandler();
+        },
+      }),
+    });
+
+    const OutputNavigator = createAppContainer(outputNavigator);
 
     return (
       <>
-        <HeaderContainer />
-        <ContentContainer screenProps={contentProps} />
+        <HeaderContainer
+          goBack={this.props.screenProps.goBack}
+          goOutgoingScreen={this.props.screenProps.goOutgoingScreen}
+        />
+        <OutputNavigator />
       </>
     );
   }
 }
 
-export default connect(
-  state => {
-    return {
-      navigate: state.navigateReducer,
-      tabs: state.tabsReducer,
-      auth: state.authReducer,
-    };
-  },
-  dispatch => {
-    return {
-      onGetOutgoingOfMonth: outs => dispatch(OutgoingOfMonth(outs)),
-    };
-  },
-)(OutputContainer);
+export default connect()(OutputContainer);

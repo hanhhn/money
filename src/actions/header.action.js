@@ -14,7 +14,7 @@ export const OutgoingOfMonth = outs => {
 
   return dispatch => {
     dispatch({
-      type: act.UpdateOutgoingOfMonth,
+      type: act.SumMonthInput,
       sum,
     });
   };
@@ -32,7 +32,7 @@ export const IncomingOfYear = ins => {
 
   return dispatch => {
     dispatch({
-      type: act.UpdateIncomingOfYear,
+      type: act.SumYearOutput,
       sum,
     });
   };

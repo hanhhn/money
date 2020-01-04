@@ -213,7 +213,7 @@ export default class OutgoingScreen extends Component {
   }
 
   render() {
-    const {onGoHomeScreen} = this.props;
+    const {goBack} = this.props;
 
     return (
       <View style={styles.container}>
@@ -221,7 +221,7 @@ export default class OutgoingScreen extends Component {
           <View>
             <TouchableOpacity
               onPress={() => {
-                onGoHomeScreen();
+                goBack();
               }}>
               <AntIcon name="arrowleft" size={20} color="#bdc3c7" />
             </TouchableOpacity>
