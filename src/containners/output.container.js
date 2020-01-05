@@ -6,6 +6,7 @@ import firestore from '@react-native-firebase/firestore';
 import OutputScreen from '../screens/output.screen';
 import HeaderContainer from './header.container.js';
 import {getSumMonthOutput} from '../actions/header.action';
+import {getOutputOfMonth} from '../actions/output.action';
 
 class OutputContainer extends Component {
   now = new Date();
@@ -22,7 +23,7 @@ class OutputContainer extends Component {
     this.loadTabs();
   }
 
-  async loadTabs() {
+  loadTabs() {
     const email = this.props.auth.email;
     if (email && email !== '') {
       firestore()
@@ -32,7 +33,7 @@ class OutputContainer extends Component {
         .then(querySnapShot => {
           const data = querySnapShot.data();
           if (data && data.months) {
-            const months = data.months;
+            const months = data.months.sort().reverse();
 
             const result =
               months.length > 0 &&
@@ -46,6 +47,11 @@ class OutputContainer extends Component {
                   title: year + '/' + month,
                 };
               });
+
+            const f = result[0];
+            if (f.year && f.month) {
+              this.props.getOutputOfMonth(email, f.year, f.month);
+            }
 
             this.setState({
               tabs: result,
@@ -112,6 +118,13 @@ class OutputContainer extends Component {
       },
       defaultNavigationOptions: ({navigation}) => ({
         tabBarOnPress: ({navigation, defaultHandler}) => {
+          const email = this.props.screenProps.email;
+          const year = +this.props.navigation.state.routeName.substr(0, 4);
+          const month = +this.props.navigation.state.routeName.substr(4, 2);
+          if (email && email !== '' && year && month) {
+            this.props.getOutputOfMonth(email, year, month);
+          }
+
           defaultHandler();
         },
       }),
@@ -124,7 +137,7 @@ class OutputContainer extends Component {
     const OutputNavigator = this.getOutputNavigator(this.state.tabs);
     const navProps = {
       email: this.props.auth.email,
-      getSumMonthOutput: this.props.getSumMonthOutput,
+      outgoings: this.props.output,
     };
 
     return (
@@ -143,11 +156,13 @@ export default connect(
   state => {
     return {
       auth: state.authReducer,
+      output: state.outputReducer,
     };
   },
   dispatch => {
     return {
-      getSumMonthOutput: outs => dispatch(getSumMonthOutput(outs)),
+      getOutputOfMonth: (email, year, month) =>
+        dispatch(getOutputOfMonth(email, year, month)),
     };
   },
 )(OutputContainer);
