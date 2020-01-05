@@ -12,11 +12,9 @@ export const getSumMonthOutput = outs => {
     });
   }
 
-  return dispatch => {
-    dispatch({
-      type: act.SumMonthOutput,
-      value: sum,
-    });
+  return {
+    type: act.SumMonthOutput,
+    value: sum,
   };
 };
 
@@ -31,10 +29,8 @@ export const getSumYearInput = ins => {
       }
     });
   }
-  return dispatch => {
-    dispatch({
-      type: act.SumYearInput,
-      value: sum,
-    });
+  return {
+    type: act.SumYearInput,
+    value: sum,
   };
 };

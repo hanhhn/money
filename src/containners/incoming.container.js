@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import IncomingScreen from '../screens/incoming.screen';
 
-class MainContainer extends Component {
+class IncomingContainer extends Component {
   constructor(props) {
     super(props);
   }
@@ -20,4 +20,4 @@ class MainContainer extends Component {
   }
 }
 
-export default connect()(MainContainer);
+export default connect()(IncomingContainer);

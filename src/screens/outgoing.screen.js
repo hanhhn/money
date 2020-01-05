@@ -17,12 +17,9 @@ import firestore from '@react-native-firebase/firestore';
 import {default as AntIcon} from 'react-native-vector-icons/AntDesign';
 import {getCategory, dateConverter} from '../cores/helpers/utils.helper';
 import {_getStoreData} from '../cores/services/storage.service';
-import {EMAIL} from '../constants';
 
 export default class OutgoingScreen extends Component {
   now = new Date();
-  email = '';
-
   constructor(props) {
     super(props);
     this.state = {
@@ -55,10 +52,6 @@ export default class OutgoingScreen extends Component {
     this.onToDatePress = this.onToDatePress.bind(this);
     this.onFromDateChange = this.onFromDateChange.bind(this);
     this.onToDateChange = this.onToDateChange.bind(this);
-
-    _getStoreData(EMAIL).then(email => {
-      this.email = email;
-    });
   }
 
   UNSAFE_componentWillMount() {
@@ -189,7 +182,7 @@ export default class OutgoingScreen extends Component {
     }
 
     const request = {
-      email: this.email,
+      email: this.props.email,
       year: this.state.fromDate.value.getFullYear(),
       month: this.state.fromDate.value.getMonth() + 1,
       note: this.state.note.value,
@@ -219,6 +212,7 @@ export default class OutgoingScreen extends Component {
       .then(() => {
         Alert.alert('Lưu thành công', 'Lưu chi tiêu thành công.');
         this.goBack();
+        this.getOutputOfMonth(request.year, request.month);
 
         const emailRef = firestore()
           .collection('outgoings')
@@ -248,6 +242,10 @@ export default class OutgoingScreen extends Component {
 
   goBack() {
     this.props.goBack();
+  }
+
+  getOutputOfMonth(year, month) {
+    this.props.getOutputOfMonth(year, month);
   }
 
   render() {
