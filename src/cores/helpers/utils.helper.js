@@ -138,7 +138,7 @@ export function groupBy(array = [], f) {
   });
 }
 
-export function getCategory() {
+export function getOutputCategory() {
   return [
     {
       value: 'eating',
@@ -188,6 +188,46 @@ export function getCategory() {
     {
       value: 'giveaway',
       display: 'Cho đi',
+      orderBy: 1,
+    },
+    {
+      value: 'orther',
+      display: 'Khác',
+      orderBy: 2,
+    },
+  ].sort((a, b) => {
+    if (a.orderBy > b.orderBy) {
+      return 1;
+    }
+
+    if (b.orderBy > a.orderBy) {
+      return -1;
+    }
+
+    return 0;
+  });
+}
+
+export function getInputCategory() {
+  return [
+    {
+      value: 'salary',
+      display: 'Lương',
+      orderBy: 1,
+    },
+    {
+      value: 'reward',
+      display: 'Thưởng',
+      orderBy: 1,
+    },
+    {
+      value: 'Sell',
+      display: 'Bán',
+      orderBy: 1,
+    },
+    {
+      value: 'debt',
+      display: 'Nợ',
       orderBy: 1,
     },
     {

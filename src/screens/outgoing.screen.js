@@ -15,8 +15,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import firestore from '@react-native-firebase/firestore';
 import {default as AntIcon} from 'react-native-vector-icons/AntDesign';
-import {getCategory, dateConverter} from '../cores/helpers/utils.helper';
-import {_getStoreData} from '../cores/services/storage.service';
+import {getOutputCategory, dateConverter} from '../cores/helpers/utils.helper';
 
 export default class OutgoingScreen extends Component {
   now = new Date();
@@ -55,7 +54,7 @@ export default class OutgoingScreen extends Component {
   }
 
   UNSAFE_componentWillMount() {
-    const categories = getCategory();
+    const categories = getOutputCategory();
     this.setState({
       categories: categories,
       category: categories[0].value,

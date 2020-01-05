@@ -1,23 +1,11 @@
 import * as act from '../actions/action';
 
-const headerReducer = (
-  state = {
-    input: 0,
-    output: 0,
-  },
-  action,
-) => {
+const inputReducer = (state = {}, action) => {
   switch (action.type) {
-    case act.SumYearInput:
+    case act.AddYearInput:
       return {
         ...state,
-        input: action.value,
-      };
-
-    case act.SumMonthOutput:
-      return {
-        ...state,
-        output: action.value,
+        [action.key]: action.data,
       };
 
     default:
@@ -25,4 +13,4 @@ const headerReducer = (
   }
 };
 
-export default headerReducer;
+export default inputReducer;
