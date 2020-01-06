@@ -10,6 +10,7 @@ const inputReducer = (
     case act.AddYearInput:
       return {
         ...state,
+        amount: action.amount,
         [action.key]: action.data,
       };
 

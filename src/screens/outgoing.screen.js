@@ -106,7 +106,7 @@ export default class OutgoingScreen extends Component {
     }
 
     const num = Number(value);
-    if (num > 100000000) {
+    if (num > 100000000 || num < 1000) {
       valid = false;
     }
 
@@ -120,7 +120,6 @@ export default class OutgoingScreen extends Component {
 
   onAmountKeyPress(e) {
     //new Intl.NumberFormat('vi-VN', { maximumSignificantDigits: 3 }).format(35000)
-    console.log(e);
   }
 
   onCategoryChange(itemValue, itemIndex) {
@@ -195,10 +194,9 @@ export default class OutgoingScreen extends Component {
 
     firestore()
       .collection('outgoings')
-      .doc(request.email)
-      .collection('items')
       .doc()
       .set({
+        email: request.email,
         year: request.year,
         month: request.month,
         from: request.from,
@@ -209,30 +207,9 @@ export default class OutgoingScreen extends Component {
         createdDate: new Date(),
       })
       .then(() => {
+        this.getOutputOfMonth(request.year, request.month);
         Alert.alert('Lưu thành công', 'Lưu chi tiêu thành công.');
         this.goBack();
-        this.getOutputOfMonth(request.year, request.month);
-
-        const emailRef = firestore()
-          .collection('outgoings')
-          .doc(request.email);
-
-        emailRef.get().then(docSnapShot => {
-          let data = docSnapShot.data();
-          const f = request.year + request.month.toString().padStart(2, '0');
-
-          if (data && data.months && data.months.length > 0) {
-            if (!data.months.includes(f)) {
-              data.months.push(f);
-              emailRef.update(data);
-            }
-          } else {
-            data = {
-              months: [f],
-            };
-            emailRef.set(data);
-          }
-        });
       })
       .catch(err => {
         Alert.alert('Xảy ra lỗi', err);

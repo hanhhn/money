@@ -88,7 +88,7 @@ export default class IncomingScreen extends Component {
     }
 
     const num = Number(value);
-    if (num > 100000000) {
+    if (num > 100000000 || num < 10000) {
       valid = false;
     }
 
@@ -142,6 +142,7 @@ export default class IncomingScreen extends Component {
     }
 
     const request = {
+      email: this.props.email,
       year: this.state.date.value.getFullYear(),
       month: this.state.date.value.getMonth() + 1,
       note: this.state.note.value,
@@ -152,14 +153,12 @@ export default class IncomingScreen extends Component {
 
     firestore()
       .collection('incomings')
-      .doc(this.props.email)
-      .collection('items')
       .doc()
       .set(request)
       .then(() => {
+        this.getInputOfYear(this.props.email, request.year);
         Alert.alert('Lưu thành công', 'Lưu thu nhập thành công.');
         this.goBack();
-        this.getInputOfYear(this.props.email, request.year);
       })
       .catch(err => {
         Alert.alert('Xảy ra lỗi', err);

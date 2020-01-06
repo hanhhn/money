@@ -27,28 +27,27 @@ class OutputContainer extends Component {
     if (email && email !== '') {
       firestore()
         .collection('settings')
-        .where('key', '==', 'MONTHS')
+        .where('key', '==', 'month')
+        .orderBy('year', 'desc')
+        .orderBy('month', 'desc')
         .get()
         .then(querySnapShot => {
-          const data = querySnapShot.data();
-          if (data && data.value) {
-            const months = data.months.sort().reverse();
+          let result = [];
+          querySnapShot.forEach(docSnapShot => {
+            const data = docSnapShot.data();
+            const year = data.year.toString();
+            const month = data.month.toString().padStart(2, 0);
+            result.push({
+              id: year + month,
+              year: data.year,
+              month: data.month,
+              title: year + '/' + month,
+            });
+          });
 
-            const result =
-              months.length > 0 &&
-              months.map(v => {
-                const year = v.substr(0, 4);
-                const month = v.substr(4, 2);
-                return {
-                  id: v,
-                  year: +year,
-                  month: +month,
-                  title: year + '/' + month,
-                };
-              });
-
+          if (result && result.length > 0) {
             const f = result[0];
-            if (f.year && f.month) {
+            if (f && f.year && f.month) {
               this.props.getOutputOfMonth(email, f.year, f.month);
             }
 
