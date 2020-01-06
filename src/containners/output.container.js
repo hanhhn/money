@@ -37,12 +37,18 @@ class OutputContainer extends Component {
             const data = docSnapShot.data();
             const year = data.year.toString();
             const month = data.month.toString().padStart(2, 0);
-            result.push({
-              id: year + month,
-              year: data.year,
-              month: data.month,
-              title: year + '/' + month,
-            });
+
+            if (
+              this.now.getFullYear() >= data.year &&
+              this.now.getMonth() + 1 >= data.month
+            ) {
+              result.push({
+                id: year + month,
+                year: data.year,
+                month: data.month,
+                title: year + '/' + month,
+              });
+            }
           });
 
           if (result && result.length > 0) {
