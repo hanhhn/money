@@ -88,7 +88,7 @@ export default class IncomingScreen extends Component {
     }
 
     const num = Number(value);
-    if (num > 100000000 || num < 10000) {
+    if (num > 1000000000 || num < 10000) {
       valid = false;
     }
 
