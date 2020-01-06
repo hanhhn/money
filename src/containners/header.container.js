@@ -9,7 +9,7 @@ class HeaderContainer extends Component {
 
   render() {
     const headerProps = {
-      amount: this.props.header.output,
+      amount: this.props.output.amount,
       ...this.props,
     };
     return <Header {...headerProps} />;
@@ -18,6 +18,6 @@ class HeaderContainer extends Component {
 
 export default connect(state => {
   return {
-    header: state.headerReducer,
+    output: state.outputReducer,
   };
 })(HeaderContainer);

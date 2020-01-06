@@ -6,27 +6,27 @@ export const getInputOfYear = (email, year) => {
   return dispatch => {
     firestore()
       .collection('incomings')
-      .doc(email)
-      .collection('items')
+      .where('email', '==', email)
       .where('year', '==', year)
       .orderBy('month', 'desc')
       .orderBy('createdDate', 'asc')
       .get()
       .then(querySnapShot => {
         let result = [];
+        let amount = 0;
         querySnapShot.forEach(docSnapshot => {
+          const data = docSnapshot.data();
+          amount += data.amount;
+
           result.push({
             ref: docSnapshot.ref.path,
-            ...docSnapshot.data(),
+            month: data.month,
+            from: data.month,
+            to: data.month,
+            category: data.category,
+            note: data.note,
+            amount: data.amount,
           });
-        });
-
-        result = result.map(value => {
-          return {
-            ...value,
-            from: value.month,
-            to: value.month,
-          };
         });
 
         const data = groupBy(result, item => {
@@ -37,6 +37,7 @@ export const getInputOfYear = (email, year) => {
           type: act.AddYearInput,
           key: year,
           data: data,
+          amount: amount,
         });
       });
   };

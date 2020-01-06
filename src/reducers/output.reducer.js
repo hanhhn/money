@@ -1,6 +1,11 @@
 import * as act from '../actions/action';
 
-const outputReducer = (state = {}, action) => {
+const outputReducer = (
+  state = {
+    amount: 0,
+  },
+  action,
+) => {
   switch (action.type) {
     case act.AddMonthOutput:
       return {

@@ -1,6 +1,11 @@
 import * as act from '../actions/action';
 
-const inputReducer = (state = {}, action) => {
+const inputReducer = (
+  state = {
+    amount: 0,
+  },
+  action,
+) => {
   switch (action.type) {
     case act.AddYearInput:
       return {

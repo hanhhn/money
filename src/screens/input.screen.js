@@ -30,25 +30,10 @@ export default class InputScreen extends Component {
     });
   }
 
-  getSumYearInput(data) {
-    let sum = 0;
-    if (data && data.length > 0) {
-      data.forEach(month => {
-        if (month && month.length > 0) {
-          sum += month.reduce((x, y) => {
-            return x + (y.amount || 0);
-          }, 0);
-        }
-      });
-    }
-
-    return sum;
-  }
-
   render() {
     const incoming = this.props.dataSource[this.state.year];
     const hasData = incoming && incoming.length > 0;
-    const amount = this.getSumYearInput(incoming);
+    const amount = this.props.dataSource.amount;
 
     return (
       <View style={styles.container}>

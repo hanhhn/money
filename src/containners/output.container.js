@@ -26,12 +26,12 @@ class OutputContainer extends Component {
     const email = this.props.auth.email;
     if (email && email !== '') {
       firestore()
-        .collection('outgoings')
-        .doc(email)
+        .collection('settings')
+        .where('key', '==', 'MONTHS')
         .get()
         .then(querySnapShot => {
           const data = querySnapShot.data();
-          if (data && data.months) {
+          if (data && data.value) {
             const months = data.months.sort().reverse();
 
             const result =
@@ -98,7 +98,7 @@ class OutputContainer extends Component {
     }
 
     const outputNavigator = createMaterialTopTabNavigator(renderTabs, {
-      lazy: true,
+      lazy: false,
       order: orderTabs,
       tabBarOptions: {
         labelStyle: {
