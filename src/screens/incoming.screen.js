@@ -31,7 +31,6 @@ export default class IncomingScreen extends Component {
       },
       categories: [],
       category: '',
-      duringDay: true,
       date: {
         value: new Date(),
         show: false,
@@ -51,6 +50,36 @@ export default class IncomingScreen extends Component {
       categories: categories,
       category: categories[0].value,
     });
+
+    if (this.props.id && this.props.id !== '') {
+      this.getIncoming(this.props.id);
+    }
+  }
+
+  getIncoming(ref) {
+    firestore()
+      .doc(ref)
+      .get()
+      .then(docSnapShot => {
+        const data = docSnapShot.data();
+        if (data) {
+          this.setState({
+            note: {
+              value: data.note,
+              valid: true,
+            },
+            amount: {
+              value: data.amount,
+              valid: true,
+            },
+            category: '',
+            date: {
+              value: new Date(data.year, data.month - 1, data.day),
+              show: false,
+            },
+          });
+        }
+      });
   }
 
   onNoteChange(value) {
@@ -145,24 +174,38 @@ export default class IncomingScreen extends Component {
       email: this.props.email,
       year: this.state.date.value.getFullYear(),
       month: this.state.date.value.getMonth() + 1,
+      day: this.state.date.value.getDate(),
       note: this.state.note.value,
       amount: this.state.amount.value,
       category: this.state.category,
-      createdDate: new Date(),
     };
 
-    firestore()
-      .collection('incomings')
-      .doc()
-      .set(request)
-      .then(() => {
-        this.getInputOfYear(this.props.email, request.year);
-        Alert.alert('Lưu thành công', 'Lưu thu nhập thành công.');
-        this.goBack();
-      })
-      .catch(err => {
-        Alert.alert('Xảy ra lỗi', err);
-      });
+    if (this.props.id) {
+      firestore()
+        .doc(this.props.id)
+        .update({...request, updatedDate: new Date()})
+        .then(() => {
+          this.getInputOfYear(this.props.email, request.year);
+          Alert.alert('Lưu thành công', 'Lưu thu nhập thành công.');
+          this.goBack();
+        })
+        .catch(err => {
+          Alert.alert('Xảy ra lỗi', err);
+        });
+    } else {
+      firestore()
+        .collection('incomings')
+        .doc()
+        .set({...request, createdDate: new Date()})
+        .then(() => {
+          this.getInputOfYear(this.props.email, request.year);
+          Alert.alert('Lưu thành công', 'Lưu thu nhập thành công.');
+          this.goBack();
+        })
+        .catch(err => {
+          Alert.alert('Xảy ra lỗi', err);
+        });
+    }
   }
 
   goBack() {
@@ -201,7 +244,7 @@ export default class IncomingScreen extends Component {
                 style={this.state.note.valid ? styles.textInput : styles.error}
                 placeholder="Ghi chú..."
                 onChangeText={this.onNoteChange}
-                multiline={true}
+                value={this.state.note.value}
               />
             </View>
             <View style={styles.item}>
@@ -216,6 +259,7 @@ export default class IncomingScreen extends Component {
                 keyboardType="numeric"
                 onChangeText={this.onAmountChange}
                 onKeyPress={this.onAmountKeyPress}
+                value={this.state.amount.value.toString()}
               />
             </View>
             <View style={styles.itemGroup}>

@@ -59,9 +59,8 @@ export default class OutgoingScreen extends Component {
       categories: categories,
       category: categories[0].value,
     });
-    debugger;
-    if (this.props.ref && this.props.ref !== '') {
-      this.getOutgoing(this.props.ref);
+    if (this.props.id && this.props.id !== '') {
+      this.getOutgoing(this.props.id);
     }
   }
 
@@ -70,7 +69,6 @@ export default class OutgoingScreen extends Component {
       .doc(ref)
       .get()
       .then(docSnapShot => {
-        debugger;
         const data = docSnapShot.data();
         if (data) {
           this.setState({
@@ -85,11 +83,11 @@ export default class OutgoingScreen extends Component {
             category: data.category,
             duringDay: data.from === data.to,
             fromDate: {
-              value: new Date(),
+              value: new Date(data.year, data.month - 1, data.from),
               show: false,
             },
             toDate: {
-              value: new Date(),
+              value: new Date(data.year, data.month - 1, data.to),
               show: false,
             },
           });
@@ -219,37 +217,47 @@ export default class OutgoingScreen extends Component {
       email: this.props.email,
       year: this.state.fromDate.value.getFullYear(),
       month: this.state.fromDate.value.getMonth() + 1,
-      note: this.state.note.value,
-      amount: this.state.amount.value,
-      category: this.state.category,
       from: this.state.fromDate.value.getDate(),
       to: this.state.duringDay
         ? this.state.fromDate.value.getDate()
         : this.state.toDate.value.getDate(),
+      note: this.state.note.value,
+      amount: this.state.amount.value,
+      category: this.state.category,
     };
 
-    firestore()
-      .collection('outgoings')
-      .doc()
-      .set({
-        email: request.email,
-        year: request.year,
-        month: request.month,
-        from: request.from,
-        to: request.to,
-        note: request.note,
-        category: request.category,
-        amount: request.amount,
-        createdDate: new Date(),
-      })
-      .then(() => {
-        this.getOutputOfMonth(request.year, request.month);
-        Alert.alert('Lưu thành công', 'Lưu chi tiêu thành công.');
-        this.goBack();
-      })
-      .catch(err => {
-        Alert.alert('Xảy ra lỗi', err);
-      });
+    if (this.props.id) {
+      firestore()
+        .doc(this.props.id)
+        .update({
+          ...request,
+          updatedDate: new Date(),
+        })
+        .then(() => {
+          this.getOutputOfMonth(request.year, request.month);
+          Alert.alert('Lưu thành công', 'Lưu chi tiêu thành công.');
+          this.goBack();
+        })
+        .catch(err => {
+          Alert.alert('Xảy ra lỗi', err);
+        });
+    } else {
+      firestore()
+        .collection('outgoings')
+        .doc(this.props.id)
+        .set({
+          ...request,
+          createdDate: new Date(),
+        })
+        .then(() => {
+          this.getOutputOfMonth(request.year, request.month);
+          Alert.alert('Lưu thành công', 'Lưu chi tiêu thành công.');
+          this.goBack();
+        })
+        .catch(err => {
+          Alert.alert('Xảy ra lỗi', err);
+        });
+    }
   }
 
   goBack() {
@@ -288,7 +296,7 @@ export default class OutgoingScreen extends Component {
                 style={this.state.note.valid ? styles.textInput : styles.error}
                 placeholder="Ghi chú..."
                 onChangeText={this.onNoteChange}
-                multiline={true}
+                value={this.state.note.value}
               />
             </View>
             <View style={styles.item}>
@@ -303,6 +311,7 @@ export default class OutgoingScreen extends Component {
                 keyboardType="numeric"
                 onChangeText={this.onAmountChange}
                 onKeyPress={this.onAmountKeyPress}
+                value={this.state.amount.value.toString()}
               />
             </View>
             <View style={styles.itemGroup}>

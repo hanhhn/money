@@ -14,9 +14,9 @@ export default class GroupItem extends Component {
     if (item.from && item.to) {
       return (
         <>
-          <Text>{item.from}</Text>
-          <Icon name="arrowdown" size={14} color="green" />
           <Text>{item.to}</Text>
+          <Icon name="arrowup" size={14} color="green" />
+          <Text>{item.from}</Text>
         </>
       );
     }

@@ -10,7 +10,7 @@ export const getOutputOfMonth = (email, year, month) => {
       .where('year', '==', year)
       .where('month', '==', month)
       .orderBy('from', 'desc')
-      .orderBy('to', 'asc')
+      .orderBy('to', 'desc')
       .orderBy('createdDate', 'asc')
       .get()
       .then(querySnapShot => {

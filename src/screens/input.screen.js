@@ -22,6 +22,10 @@ export default class InputScreen extends Component {
     };
   }
 
+  goIncomingScreen(params) {
+    this.props.goIncomingScreen(params);
+  }
+
   onYearChange(itemValue, itemIndex) {
     this.props.getInputOfYear(this.props.email, +itemValue);
 
@@ -69,7 +73,7 @@ export default class InputScreen extends Component {
                     <GroupItem
                       key={index}
                       dataSource={value}
-                      onItemClick={this.goIncomingScreen}
+                      onItemClick={params => this.goIncomingScreen(params)}
                     />
                   );
                 })}
@@ -89,7 +93,7 @@ export default class InputScreen extends Component {
         <View style={styles.footer}>
           <TouchableOpacity
             style={styles.plusCircle}
-            onPress={() => this.props.goIncomingScreen()}>
+            onPress={() => this.goIncomingScreen()}>
             <Text style={styles.plus}>+</Text>
           </TouchableOpacity>
         </View>
