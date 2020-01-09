@@ -59,6 +59,42 @@ export default class OutgoingScreen extends Component {
       categories: categories,
       category: categories[0].value,
     });
+    debugger;
+    if (this.props.ref && this.props.ref !== '') {
+      this.getOutgoing(this.props.ref);
+    }
+  }
+
+  getOutgoing(ref) {
+    firestore()
+      .doc(ref)
+      .get()
+      .then(docSnapShot => {
+        debugger;
+        const data = docSnapShot.data();
+        if (data) {
+          this.setState({
+            note: {
+              value: data.note,
+              valid: true,
+            },
+            amount: {
+              value: data.amount,
+              valid: true,
+            },
+            category: data.category,
+            duringDay: data.from === data.to,
+            fromDate: {
+              value: new Date(),
+              show: false,
+            },
+            toDate: {
+              value: new Date(),
+              show: false,
+            },
+          });
+        }
+      });
   }
 
   onDuringDaySwitch() {

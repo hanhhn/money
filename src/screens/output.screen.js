@@ -1,10 +1,14 @@
 import React, {Component} from 'react';
 import {Text, View, ScrollView, StyleSheet} from 'react-native';
-import Group from '../components/group.component';
+import GroupItem from '../components/group.component';
 
 export default class OutputScreen extends Component {
   constructor(props) {
     super(props);
+  }
+
+  goOutgoingScreen(params) {
+    this.props.screenProps.goOutgoingScreen(params);
   }
 
   render() {
@@ -19,7 +23,13 @@ export default class OutputScreen extends Component {
         {hasData && (
           <View>
             {outgoings.map((value, index) => {
-              return <Group key={index} dataSource={value} />;
+              return (
+                <GroupItem
+                  key={index}
+                  dataSource={value}
+                  onItemClick={params => this.goOutgoingScreen(params)}
+                />
+              );
             })}
           </View>
         )}

@@ -17,12 +17,20 @@ class MainContainer extends Component {
     navigation.goBack();
   }
 
-  goOutgoingScreen(navigation) {
-    navigation.navigate('OutgoingScreen');
+  goOutgoingScreen(navigation, params) {
+    if (params) {
+      navigation.navigate('OutgoingScreen', params);
+    } else {
+      navigation.navigate('OutgoingScreen');
+    }
   }
 
-  goIncomingScreen(navigation) {
-    navigation.navigate('IncomingScreen');
+  goIncomingScreen(navigation, params) {
+    if (params) {
+      navigation.navigate('IncomingScreen', params);
+    } else {
+      navigation.navigate('IncomingScreen');
+    }
   }
 
   render() {
@@ -77,8 +85,10 @@ class MainContainer extends Component {
     const MainNavigator = createAppContainer(mainNavigator);
 
     const props = {
-      goOutgoingScreen: () => this.goOutgoingScreen(this.props.navigation),
-      goIncomingScreen: () => this.goIncomingScreen(this.props.navigation),
+      goOutgoingScreen: params =>
+        this.goOutgoingScreen(this.props.navigation, params),
+      goIncomingScreen: params =>
+        this.goIncomingScreen(this.props.navigation, params),
     };
 
     return <MainNavigator screenProps={props} />;

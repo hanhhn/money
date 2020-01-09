@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Text, View, StyleSheet} from 'react-native';
+import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
 import Item from './item.component';
 import Icon from 'react-native-vector-icons/AntDesign';
 import {kConverter} from '../cores/helpers/utils.helper';
@@ -26,12 +26,11 @@ export default class GroupItem extends Component {
     if (this.props.dataSource) {
       return this.props.dataSource.map((value, index) => {
         return (
-          <Item
+          <TouchableOpacity
             key={index}
-            icon={value.icon}
-            note={value.note}
-            amount={value.amount}
-          />
+            onPress={() => this.props.onItemClick({ref: value.ref})}>
+            <Item icon={value.icon} note={value.note} amount={value.amount} />
+          </TouchableOpacity>
         );
       });
     }

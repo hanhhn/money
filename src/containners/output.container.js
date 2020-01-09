@@ -142,6 +142,7 @@ class OutputContainer extends Component {
     const navProps = {
       email: this.props.auth.email,
       outgoings: this.props.output,
+      goOutgoingScreen: this.props.screenProps.goOutgoingScreen,
     };
 
     return (

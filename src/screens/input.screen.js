@@ -7,7 +7,7 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import Group from '../components/group.component';
+import GroupItem from '../components/group.component';
 import {currencyConverter} from '../cores/helpers/utils.helper';
 
 export default class InputScreen extends Component {
@@ -65,7 +65,13 @@ export default class InputScreen extends Component {
             <View style={{padding: 1}}>
               {hasData &&
                 incoming.map((value, index) => {
-                  return <Group key={index} dataSource={value} />;
+                  return (
+                    <GroupItem
+                      key={index}
+                      dataSource={value}
+                      onItemClick={this.goIncomingScreen}
+                    />
+                  );
                 })}
               {!hasData && (
                 <View

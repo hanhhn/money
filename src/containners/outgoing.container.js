@@ -18,7 +18,9 @@ class OutgoingContainer extends Component {
   }
 
   render() {
+    const ref = this.props.navigation.getParam('ref');
     const props = {
+      ref: ref,
       email: this.props.auth.email,
       goBack: () => this.goBack(this.props.navigation),
       getOutputOfMonth: (year, month) => this.getOutputOfMonth(year, month),
